@@ -1,7 +1,6 @@
 package hello.gccoffee.dto;
 
 import hello.gccoffee.entity.Category;
-import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
 import jakarta.validation.constraints.Email;
@@ -34,20 +33,20 @@ public class OrderItemDTO {
     private Category category;
 
     public OrderItemDTO(OrderItem orderItem) {
-        this.email = email;
-        this.address = address;
-        this.postcode = postcode;
-        this.productName = productName;
-        this.price = price;
-        this.quantity = quantity;
-        this.category = category;
+        this.email = orderItem.getEmail();
+        this.address = orderItem.getAddress();
+        this.postcode = orderItem.getPostCode();
+        this.productName = orderItem.getProduct().getProductName();
+        this.price = orderItem.getPrice();
+        this.quantity = orderItem.getQuantity();
+        this.category = orderItem.getCategory();
     }
     public OrderItem toEntity() {
         Product product = Product.builder().productName(productName).build();
-        Order order = Order.builder()
-                .email(this.email)
+        return OrderItem.builder()
+                .email( this.email)
                 .address( this.address)
-                .postcode(this.postcode)
+                .postCode(this.postcode)
                 .product(product)
                 .price(this.price)
                 .quantity( this.quantity)
