@@ -1,7 +1,6 @@
 package hello.gccoffee.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,14 +22,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
 
-    @NotBlank
     @Column(length = 100)
     private String productName;
 
-    @NotBlank
     private Category category;
 
-    @NotBlank
     private int price;
 
     @Column(length = 2000)
@@ -41,4 +37,16 @@ public class Product {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
+
+    public void changePrice(int price) {
+        this.price = price;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
 }

@@ -1,8 +1,6 @@
 package hello.gccoffee.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -24,14 +22,11 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product prosduct;
+    private Product product;
 
     private Category category;
 
-    @Min(0)
     private int price;
 
-    @Min(0)
-    @Max(100)
     private int quantity;
 }
