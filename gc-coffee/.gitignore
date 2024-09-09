@@ -36,14 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### .idea
-/src/main/resources/
-### application.properties
-/application.properties
 
-### gradle
-/build.gradle
-/gradlew
-/gradlew.bat
-/settings.gradle
 

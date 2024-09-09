@@ -1,7 +1,8 @@
 package hello.gccoffee.exception;
 
 public enum ProductException {
-    FAIL_REGISTER("FAIL_REGISTER", 400);
+    FAIL_MODIFY("PRODUCT_FAILED_MODIFY", 400),
+    NOT_FOUND("PRODUCT_NOT_FOUND", 404);
 
     private ProductTaskException productTaskException;
     ProductException(String message, int code) {

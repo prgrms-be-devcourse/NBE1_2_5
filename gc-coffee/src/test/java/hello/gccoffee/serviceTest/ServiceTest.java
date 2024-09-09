@@ -26,12 +26,12 @@ public class ServiceTest {
     @Commit
     public void registerTest() {
         ProductDTO productDTO = ProductDTO.builder()
-                .productName("커피2")
-                .price(5000)
+                .productId(1)
+                .price(8000)
                 .category(Category.COFFEE_1)
-                .description("맛있는 커피")
+                .description("맛있는 커피3")
                 .build();
 
-        productService.register(productDTO);
+        productService.modify(productDTO);
     }
 }
