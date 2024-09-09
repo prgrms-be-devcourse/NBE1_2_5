@@ -38,7 +38,7 @@ public class OrderDTO {
 
     public Order toEntity() {
         return Order.builder()
-                .orderId(orderId)
+                .orderStatus(OrderEnum.ORDER_ACCEPTED)
                 .email(email)
                 .address(address)
                 .postcode(postcode)

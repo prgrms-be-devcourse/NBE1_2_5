@@ -29,9 +29,11 @@ public class Order {
 
     private String postcode;
 
+
     @CreatedDate
     private LocalDateTime orderTime;
 
+    @Enumerated(EnumType.STRING)
     private OrderEnum orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -49,4 +51,5 @@ public class Order {
     public void changeOrderStatus(OrderEnum orderStatus) {
         this.orderStatus = orderStatus;
     }
+
 }

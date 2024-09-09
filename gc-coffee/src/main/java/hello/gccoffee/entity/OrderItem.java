@@ -24,6 +24,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private int price;
