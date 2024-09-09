@@ -1,8 +1,6 @@
 package hello.gccoffee.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,24 +23,30 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
-    @Email
-    @NotBlank
     private String email;
 
-    @NotBlank
     private String address;
 
-    @NotBlank
     private String postcode;
 
     @CreatedDate
     private LocalDateTime orderTime;
 
-    @NotBlank
     private OrderEnum orderStatus;
 
-    @OneToMany
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
-    List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
+    public void addOrderItems(OrderItem orderItem) {
+        orderItems.add(orderItem);
+    }
+
+    public void clearOrderItems() {
+        orderItems.clear();
+    }
+
+    public void changeOrderStatus(OrderEnum orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }
