@@ -1,8 +1,6 @@
 package hello.gccoffee.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -34,10 +32,7 @@ public class OrderItem {
 
     private Category category;
 
-    @Min(0)
     private int price;
 
-    @Min(0)
-    @Max(100)
     private int quantity;
 }
