@@ -33,7 +33,7 @@ public class Order {
     private LocalDateTime orderTime;
 
     @Enumerated(EnumType.STRING)
-    private OrderEnum orderEnum;
+    private OrderEnum OrderEnum;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default

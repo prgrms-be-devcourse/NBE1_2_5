@@ -1,5 +1,11 @@
 package hello.gccoffee.service;
 
+
+
+import hello.gccoffee.entity.Order;
+import hello.gccoffee.entity.Product;
+import hello.gccoffee.repository.ProductRepository;
+
 import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.exception.OrderException;
@@ -20,6 +26,7 @@ import java.util.List;
 @Log4j2
 public class OrderItemService {
     private final OrderItemRepository orderItemRepository;
+    private final ProductRepository productRepository; //문제점1
 
     // orderId(혹은 order)에 해당하는 상품들 조회
     public List<OrderItemDTO> getAllItems(int orderId) {
@@ -47,5 +54,28 @@ public class OrderItemService {
         });
         return orderItemDTOS;
     }
+    public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for (OrderItemDTO item : items) {
 
+            try {
+                //문제1 productName을 productId로 변환하기 위해 productRepository에 의존하는 게 맞는가?
+                String productName = item.getProductName();
+                Product product = productRepository.findByProductName(productName);
+                int productId = product.getProductId();
+
+                OrderItem orderItem = item.toEntity(productId, order.getOrderId());
+                if(orderItem.getOrderItemId()!=order.getOrderId()){
+                    if (!orderItem.getOrder().getEmail().equals(order.getEmail())) {
+                        return null;
+                    }
+                }
+                orderItemRepository.save(orderItem);
+                order.addOrderItem(orderItem);
+            } catch (Exception e) {
+                throw OrderException.ORDER_ITEM_NOT_REGISTERED.get();
+            }
+        }
+        return orderItemList;
+    }
 }

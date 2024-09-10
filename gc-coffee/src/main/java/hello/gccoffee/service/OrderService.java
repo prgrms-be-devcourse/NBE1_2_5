@@ -22,4 +22,19 @@ public class OrderService {
         return new OrderDTO(foundOrder);
     }
 
+    public Order addOrders(OrderDTO orderDTO) {
+
+        try {
+            Order order = orderDTO.toEntity();
+            orderRepository.save(order);
+            return order;
+        } catch (Exception e) {
+            throw OrderException.ORDER_NOT_REGISTERED.get();
+        }
+    }
+
+    public Order findById(int orderId) {
+        return orderRepository.findById(orderId).orElseThrow();
+    }
+
 }
