@@ -4,10 +4,7 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,16 +33,16 @@ public class OrderItemDTO {
     @NotBlank
     private String productName;
 
-    @NotBlank
+    @NotNull
     @Min(0)
     private int price;
 
-    @NotBlank
+    @NotNull
     @Min(0)
     @Max(100)
     private int quantity;
 
-    @NotBlank
+    @NotNull
     private Category category;
 
     public OrderItemDTO(OrderItem orderItem) {

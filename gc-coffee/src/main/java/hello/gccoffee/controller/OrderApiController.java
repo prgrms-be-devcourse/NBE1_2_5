@@ -6,10 +6,10 @@ import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.service.OrderItemService;
 import hello.gccoffee.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +39,15 @@ public class OrderApiController {
 
     @PostMapping("/add/{orderId}")
     public ResponseEntity<Order> addOrderItems
-            (@PathVariable int orderId, @Validated @RequestBody List<OrderItemDTO> items,BindingResult bindingResult) {
+            (@PathVariable int orderId, @Valid @RequestBody List<OrderItemDTO> items, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+
         Order findOrder = orderService.findById(orderId);
         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
-        for (OrderItem orderItem : orderItemList) {
-            findOrder.addOrderItems(orderItem);
-        }
+
 
         return ResponseEntity.ok(findOrder);
     }
