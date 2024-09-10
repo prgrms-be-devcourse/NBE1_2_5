@@ -27,7 +27,6 @@ public class OrderService {
         //추가과정1. 같은 이메일로 등록시 어떻게 처리할것인지?
         try {
             Order order = orderDTO.toEntity();
-            order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
             orderRepository.save(order);
             return order;
         } catch (Exception e) {
@@ -36,7 +35,7 @@ public class OrderService {
     }
 
     public Order findById(int orderId) {
-        return orderRepository.findById(orderId).orElseThrow();
+        return orderRepository.findById(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
     }
 
 }

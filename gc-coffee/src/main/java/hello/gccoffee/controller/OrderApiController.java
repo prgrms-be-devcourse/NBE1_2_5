@@ -53,7 +53,7 @@ public class OrderApiController {
     @PostMapping("/add")
     public ResponseEntity<Order> addOrder(@Validated @RequestBody OrderDTO orderDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw OrderException.BAD_RESOURCE.get();
         }
         Order order = orderService.addOrders(orderDTO);
         return ResponseEntity.ok(order);
@@ -67,15 +67,15 @@ public class OrderApiController {
 
         log.info("orderId = {}, items = {}",orderId,items.toString());
         if (bindingResult.hasErrors()) {
-            throw OrderException.ORDER_NOT_FOUND.get();
-
+            throw OrderException.BAD_RESOURCE.get();
         }
         Order findOrder = orderService.findById(orderId);
 
+
         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
                 if (orderItemList == null) {
-                    //필요한 부분인지 검증 필요
-                    throw OrderException.ORDER_ITEM_NOT_FOUND.get();
+                    //필요한 부분인지 검증 필요,아이템의 order 정보가 findOrder 와 다를 때
+                    throw OrderException.WRONG_ORDER_ITEM_LIST.get();
                 }
 
         return ResponseEntity.ok(findOrder);
