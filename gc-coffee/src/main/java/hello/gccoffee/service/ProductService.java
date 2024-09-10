@@ -53,4 +53,16 @@ public class ProductService {
             throw ProductException.FAIL_MODIFY.get();
         }
     }
+
+    public void remove(int pno) {
+        Optional<Product> foundProduct = productRepository.findById(pno);
+        Product product = foundProduct.orElseThrow(ProductException.NOT_FOUND::get);
+
+        try {
+            productRepository.delete(product);
+        } catch(Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_REMOVED.get();
+        }
+    }
 }
