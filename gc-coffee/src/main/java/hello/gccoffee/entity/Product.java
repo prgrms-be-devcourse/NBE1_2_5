@@ -20,14 +20,15 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
+    private Integer productId;
 
     @Column(length = 100)
     private String productName;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
-    private int price;
+    private Integer price;
 
     @Column(length = 2000)
     private String description;

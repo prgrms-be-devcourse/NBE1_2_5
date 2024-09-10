@@ -69,7 +69,7 @@ public class OrderItemDTO {
         Order order = Order.builder()
                 .orderId(orderId)
                 .email(this.email)
-                .address( this.address)
+                .address(this.address)
                 .postcode(this.postcode)
                 .build();
 

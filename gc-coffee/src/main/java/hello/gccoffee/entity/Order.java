@@ -21,7 +21,8 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Integer orderId;
+
 
     private String email;
 
@@ -32,6 +33,7 @@ public class Order {
     @CreatedDate
     private LocalDateTime orderTime;
 
+    @Enumerated(EnumType.STRING)
     private OrderEnum orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

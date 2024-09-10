@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "t_order_item")
 @Getter
-@ToString(exclude = {"order", "products"})
+@ToString(exclude = {"order", "product"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -16,6 +16,12 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderItemId;
 
+    private String email;
+
+    private String address;
+
+    private String postCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
@@ -24,6 +30,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private int price;
