@@ -21,9 +21,8 @@ public class OrderItemRepositoryTest {
     @Transactional
     public void testOrderRead() {
         int orderId = 1;
-        int productId = 1;
 
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(1).orElse(null);
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElse(null);
         orderItemList.forEach(orderItem -> {
             System.out.println("orderItem : " + orderItem);
             System.out.println("=======================");

@@ -21,5 +21,4 @@ public class OrderService {
         Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
         return new OrderDTO(foundOrder);
     }
-
 }
