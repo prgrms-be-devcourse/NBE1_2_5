@@ -32,7 +32,8 @@ public class Order {
     @CreatedDate
     private LocalDateTime orderTime;
 
-    private OrderEnum orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderEnum orderEnum;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
@@ -46,7 +47,7 @@ public class Order {
         orderItems.clear();
     }
 
-    public void changeOrderStatus(OrderEnum orderStatus) {
-        this.orderStatus = orderStatus;
+    public void changeOrderEnum(OrderEnum orderEnum) {
+        this.orderEnum = orderEnum;
     }
 }
