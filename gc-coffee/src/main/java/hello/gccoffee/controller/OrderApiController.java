@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/orders")
 @Log4j2
 public class OrderApiController {
     private final OrderMainService orderMainService;

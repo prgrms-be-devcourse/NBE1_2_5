@@ -27,7 +27,7 @@ public class OrderItem {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private int price;
+    private Integer price;
 
     private int quantity;
 }
