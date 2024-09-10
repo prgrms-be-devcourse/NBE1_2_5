@@ -2,8 +2,10 @@ package hello.gccoffee.dto;
 
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderEnum;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +26,7 @@ public class OrderDTO {
     @NotBlank
     private String address;
 
-    private OrderEnum orderStatus;
+    private OrderEnum orderEnum;
 
     private int orderId;
 
@@ -32,7 +34,7 @@ public class OrderDTO {
         email = order.getEmail();
         postcode = order.getPostcode();
         address = order.getAddress();
-        orderStatus = order.getOrderStatus();
+        orderEnum = order.getOrderEnum();
         orderId = order.getOrderId();
     }
 
@@ -43,6 +45,5 @@ public class OrderDTO {
                 .address(address)
                 .postcode(postcode)
                 .build();
-
     }
 }

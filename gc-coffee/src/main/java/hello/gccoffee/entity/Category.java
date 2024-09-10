@@ -1,5 +1,6 @@
 package hello.gccoffee.entity;
 
 public enum Category {
-    COFFEE_1
+    COFFEE_BEAN_PACKAGE,
+    COFFEE_BEAN_CAPSULE
 }

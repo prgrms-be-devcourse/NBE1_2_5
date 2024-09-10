@@ -16,12 +16,6 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderItemId;
 
-    private String email;
-
-    private String address;
-
-    private String postCode;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
@@ -33,7 +27,7 @@ public class OrderItem {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private int price;
+    private Integer price;
 
     private int quantity;
 }

@@ -1,6 +1,8 @@
 package hello.gccoffee.controller.advice;
 
+import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.exception.ProductTaskException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @RestControllerAdvice
 public class AdminApiControllerAdvice {
 
@@ -50,5 +53,13 @@ public class AdminApiControllerAdvice {
         Map<String, String> map = new HashMap<>();
         map.put("error", "입력값 형식을 확인해주세요.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+    }
+
+    @ExceptionHandler(OrderTaskException.class)
+    public ResponseEntity<Map<String, String>> handleOrderTaskException(OrderTaskException e) {
+        log.info("OrderTaskException : " + e.getMessage());
+
+        Map<String, String> errMap = Map.of("error", e.getMessage());
+        return ResponseEntity.status(e.getCode()).body(errMap);
     }
 }

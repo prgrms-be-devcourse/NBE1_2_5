@@ -4,10 +4,12 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -69,7 +71,7 @@ public class OrderItemDTO {
         Order order = Order.builder()
                 .orderId(orderId)
                 .email(this.email)
-                .address(this.address)
+                .address( this.address)
                 .postcode(this.postcode)
                 .build();
 
