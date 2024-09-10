@@ -2,6 +2,7 @@ package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.entity.Order;
+import hello.gccoffee.exception.OrderException;
 import hello.gccoffee.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +15,14 @@ public class OrderService implements OrderMainService{
     private final OrderRepository orderRepository;
 
     public Order addOrders(OrderDTO orderDTO) {
-        log.info("DTO정보 = {},{},{}",orderDTO.getEmail(),orderDTO.getAddress(),orderDTO.getPostcode());
-        Order order = orderDTO.toEntity();
 
-        orderRepository.save(order);
-        return order;
+        try {
+            Order order = orderDTO.toEntity();
+            orderRepository.save(order);
+            return order;
+        } catch (Exception e) {
+            throw OrderException.ORDER_NOT_REGISTERED.get();
+        }
     }
 
     public Order findById(int orderId) {
