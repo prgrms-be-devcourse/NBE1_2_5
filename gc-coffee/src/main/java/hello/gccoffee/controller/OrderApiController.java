@@ -23,15 +23,14 @@ public class OrderApiController {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
 
-//    @GetMapping("/add")
-//    public ResponseEntity<Order> orderForm(@Validated @RequestBody Order order, BindingResult bindingResult) {
-//
-//    }
 
     @PostMapping("/add")
     public ResponseEntity<Order> addOrder(@Validated @RequestBody OrderDTO orderDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         Order order = orderService.addOrders(orderDTO);
-        int orderId = order.getOrderId();
 
         return ResponseEntity.ok(order);
 
@@ -39,15 +38,20 @@ public class OrderApiController {
 
     @PostMapping("/add/{orderId}")
     public ResponseEntity<Order> addOrderItems
+            //validated -> valid로 교체 : validated는 List안 orderItemDTO를 검증해주지 못함(실수가능성 있음)
             (@PathVariable int orderId, @Valid @RequestBody List<OrderItemDTO> items, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            //잘못된 바인딩 결과는 404로 확인 검증 완료(quantity -1대입, null일경우 등등)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
 
         Order findOrder = orderService.findById(orderId);
         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
-
+                if (orderItemList == null) {
+                    //필요한 부분인지 검증 필요
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
 
         return ResponseEntity.ok(findOrder);
     }
