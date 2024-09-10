@@ -32,7 +32,7 @@ public class ProductServiceTest {
         ProductDTO productDTO = ProductDTO.builder()
                 .productId(productId)
                 .productName("Test Product")
-                .category(Category.COFFEE_1) // 예시 카테고리
+                .category(Category.COFFEE_BEAN_PACKAGE) // 예시 카테고리
                 .price(5000)
                 .description("This is a test product")
                 .createdAt(LocalDateTime.now())
@@ -51,5 +51,6 @@ public class ProductServiceTest {
         // Then
         assertFalse(productRepository.findById(productId).isPresent(), "Product should not be present");
     }
+
 
 }

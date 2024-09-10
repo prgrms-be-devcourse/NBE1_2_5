@@ -30,4 +30,24 @@ public class OrderItem {
     private Integer price;
 
     private int quantity;
+
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
+
+    public void changePrice(Integer price) {
+        this.price = price;
+    }
+
+    public void changeQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void changeProduct(Product product) {
+        this.product = product;
+    }
+
+    public void changeOrder(Order order) {
+        this.order = order;
+    }
 }

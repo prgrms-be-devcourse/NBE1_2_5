@@ -6,9 +6,11 @@ import hello.gccoffee.service.OrderMainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,4 +38,5 @@ public class OrderApiController {
         log.info("APIController ===> orderMainService에서 orderItemDTOs 반환 : " + orderItemDTOS);
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
+
 }
