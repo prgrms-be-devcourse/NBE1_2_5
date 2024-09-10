@@ -1,0 +1,268 @@
+Index: gc-coffee/src/main/java/hello/gccoffee/entity/Order.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.entity;\r\n\r\nimport jakarta.persistence.*;\r\nimport lombok.*;\r\nimport org.springframework.data.annotation.CreatedDate;\r\nimport org.springframework.data.jpa.domain.support.AuditingEntityListener;\r\n\r\nimport java.time.LocalDateTime;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n@Entity\r\n@Table(name = \"t_order\")\r\n@ToString\r\n@Getter\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\n@Builder\r\n@EntityListeners(AuditingEntityListener.class)\r\npublic class Order {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    private int orderId;\r\n\r\n    private String email;\r\n\r\n    private String address;\r\n\r\n    private String postcode;\r\n\r\n\r\n    @CreatedDate\r\n    private LocalDateTime orderTime;\r\n\r\n    @Enumerated(EnumType.STRING)\r\n    private OrderEnum orderStatus;\r\n\r\n    @OneToMany(mappedBy = \"order\", cascade = CascadeType.ALL, fetch = FetchType.LAZY)\r\n    @Builder.Default\r\n    private List<OrderItem> orderItems = new ArrayList<>();\r\n\r\n    public void addOrderItems(OrderItem orderItem) {\r\n        orderItems.add(orderItem);\r\n    }\r\n\r\n    public void clearOrderItems() {\r\n        orderItems.clear();\r\n    }\r\n\r\n    public void changeOrderStatus(OrderEnum orderStatus) {\r\n        this.orderStatus = orderStatus;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java b/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java	(date 1725927499330)
+@@ -40,7 +40,7 @@
+     @Builder.Default
+     private List<OrderItem> orderItems = new ArrayList<>();
+ 
+-    public void addOrderItems(OrderItem orderItem) {
++    public void addOrderItem(OrderItem orderItem) {
+         orderItems.add(orderItem);
+     }
+ 
+Index: gc-coffee/src/main/java/hello/gccoffee/dto/OrderItemDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.dto;\r\n\r\nimport hello.gccoffee.entity.Category;\r\nimport hello.gccoffee.entity.Order;\r\nimport hello.gccoffee.entity.OrderItem;\r\nimport hello.gccoffee.entity.Product;\r\nimport jakarta.validation.constraints.Email;\r\nimport jakarta.validation.constraints.Max;\r\nimport jakarta.validation.constraints.Min;\r\nimport jakarta.validation.constraints.NotBlank;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Builder;\r\nimport lombok.Data;\r\nimport lombok.NoArgsConstructor;\r\n\r\n@Data\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\n@Builder\r\npublic class OrderItemDTO {\r\n\r\n    // description 필요 시 추가\r\n//    private int productId;\r\n//    private int orderId;\r\n\r\n    @NotBlank\r\n    @Email\r\n    private String email;\r\n\r\n    @NotBlank\r\n    private String address;\r\n\r\n    @NotBlank\r\n    private String postcode;\r\n\r\n    @NotBlank\r\n    private String productName;\r\n\r\n    @NotBlank\r\n    @Min(0)\r\n    private int price;\r\n\r\n    @NotBlank\r\n    @Min(0)\r\n    @Max(100)\r\n    private int quantity;\r\n\r\n    @NotBlank\r\n    private Category category;\r\n\r\n    public OrderItemDTO(OrderItem orderItem) {\r\n        email = orderItem.getOrder().getEmail();\r\n        address = orderItem.getOrder().getAddress();\r\n        postcode = orderItem.getOrder().getPostcode();\r\n        productName = orderItem.getProduct().getProductName();\r\n        price = orderItem.getProduct().getPrice();\r\n        quantity = orderItem.getQuantity();\r\n        category = orderItem.getCategory();\r\n    }\r\n\r\n    public OrderItem toEntity(int productId, int orderId) {\r\n        Product product = Product.builder()\r\n                .productId(productId)\r\n                .productName(productName)\r\n                .category(category)\r\n                .price(price)\r\n                .build();\r\n\r\n        Order order = Order.builder()\r\n                .orderId(orderId)\r\n                .email(this.email)\r\n                .address( this.address)\r\n                .postcode(this.postcode)\r\n                .build();\r\n\r\n        return OrderItem.builder()\r\n                .order(order)\r\n                .product(product)\r\n                .category(category)\r\n                .price(price)\r\n                .quantity(quantity)\r\n                .build();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/dto/OrderItemDTO.java b/gc-coffee/src/main/java/hello/gccoffee/dto/OrderItemDTO.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/dto/OrderItemDTO.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/dto/OrderItemDTO.java	(date 1725931915597)
+@@ -4,10 +4,7 @@
+ import hello.gccoffee.entity.Order;
+ import hello.gccoffee.entity.OrderItem;
+ import hello.gccoffee.entity.Product;
+-import jakarta.validation.constraints.Email;
+-import jakarta.validation.constraints.Max;
+-import jakarta.validation.constraints.Min;
+-import jakarta.validation.constraints.NotBlank;
++import jakarta.validation.constraints.*;
+ import lombok.AllArgsConstructor;
+ import lombok.Builder;
+ import lombok.Data;
+@@ -36,16 +33,16 @@
+     @NotBlank
+     private String productName;
+ 
+-    @NotBlank
++    @NotNull
+     @Min(0)
+     private int price;
+ 
+-    @NotBlank
++    @NotNull
+     @Min(0)
+     @Max(100)
+     private int quantity;
+ 
+-    @NotBlank
++    @NotNull
+     private Category category;
+ 
+     public OrderItemDTO(OrderItem orderItem) {
+Index: gc-coffee/src/main/java/hello/gccoffee/repository/ProductRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.repository;\r\n\r\nimport hello.gccoffee.entity.Product;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\n\r\npublic interface ProductRepository extends JpaRepository<Product, Integer> {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/repository/ProductRepository.java b/gc-coffee/src/main/java/hello/gccoffee/repository/ProductRepository.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/repository/ProductRepository.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/repository/ProductRepository.java	(date 1725928312268)
+@@ -4,4 +4,6 @@
+ import org.springframework.data.jpa.repository.JpaRepository;
+ 
+ public interface ProductRepository extends JpaRepository<Product, Integer> {
++
++    Product findByProductName(String productName);
+ }
+Index: gc-coffee/src/main/java/hello/gccoffee/controller/OrderApiController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.controller;\r\n\r\nimport hello.gccoffee.dto.OrderDTO;\r\nimport hello.gccoffee.dto.OrderItemDTO;\r\nimport hello.gccoffee.entity.Order;\r\nimport hello.gccoffee.entity.OrderItem;\r\nimport hello.gccoffee.service.OrderItemService;\r\nimport hello.gccoffee.service.OrderService;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.aspectj.weaver.ast.Or;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.validation.BindingResult;\r\nimport org.springframework.validation.annotation.Validated;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.List;\r\n\r\n@RequiredArgsConstructor\r\n@RestController\r\n@RequestMapping(\"/api/orders\")\r\npublic class OrderApiController {\r\n    private final OrderService orderService;\r\n    private final OrderItemService orderItemService;\r\n\r\n//    @GetMapping(\"/add\")\r\n//    public ResponseEntity<Order> orderForm(@Validated @RequestBody Order order, BindingResult bindingResult) {\r\n//\r\n//    }\r\n\r\n    @PostMapping(\"/add\")\r\n    public ResponseEntity<Order> addOrder(@Validated @RequestBody OrderDTO orderDTO, BindingResult bindingResult) {\r\n        Order order = orderService.addOrders(orderDTO);\r\n        int orderId = order.getOrderId();\r\n\r\n        return ResponseEntity.ok(order);\r\n\r\n    }\r\n\r\n    @PostMapping(\"/add/{orderId}\")\r\n    public ResponseEntity<Order> addOrderItems\r\n            (@PathVariable int orderId, @Validated @RequestBody List<OrderItemDTO> items,BindingResult bindingResult) {\r\n        Order findOrder = orderService.findById(orderId);\r\n        List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);\r\n        for (OrderItem orderItem : orderItemList) {\r\n            findOrder.addOrderItems(orderItem);\r\n        }\r\n\r\n        return ResponseEntity.ok(findOrder);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/controller/OrderApiController.java b/gc-coffee/src/main/java/hello/gccoffee/controller/OrderApiController.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/controller/OrderApiController.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/controller/OrderApiController.java	(date 1725932338518)
+@@ -6,10 +6,10 @@
+ import hello.gccoffee.entity.OrderItem;
+ import hello.gccoffee.service.OrderItemService;
+ import hello.gccoffee.service.OrderService;
++import jakarta.validation.Valid;
+ import lombok.RequiredArgsConstructor;
+-import org.aspectj.weaver.ast.Or;
++import org.springframework.http.HttpStatus;
+ import org.springframework.http.ResponseEntity;
+-import org.springframework.ui.Model;
+ import org.springframework.validation.BindingResult;
+ import org.springframework.validation.annotation.Validated;
+ import org.springframework.web.bind.annotation.*;
+@@ -39,12 +39,15 @@
+ 
+     @PostMapping("/add/{orderId}")
+     public ResponseEntity<Order> addOrderItems
+-            (@PathVariable int orderId, @Validated @RequestBody List<OrderItemDTO> items,BindingResult bindingResult) {
++            (@PathVariable int orderId, @Valid @RequestBody List<OrderItemDTO> items, BindingResult bindingResult) {
++        if (bindingResult.hasErrors()) {
++            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
++        }
++
++
+         Order findOrder = orderService.findById(orderId);
+         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
+-        for (OrderItem orderItem : orderItemList) {
+-            findOrder.addOrderItems(orderItem);
+-        }
++
+ 
+         return ResponseEntity.ok(findOrder);
+     }
+Index: gc-coffee/src/main/java/hello/gccoffee/controller/AdminApiController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.controller;\r\n\r\npublic class AdminApiController {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/controller/AdminApiController.java b/gc-coffee/src/main/java/hello/gccoffee/controller/AdminApiController.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/controller/AdminApiController.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/controller/AdminApiController.java	(date 1725928510742)
+@@ -1,4 +1,26 @@
+ package hello.gccoffee.controller;
+ 
++import hello.gccoffee.dto.ProductDTO;
++import hello.gccoffee.entity.Product;
++import hello.gccoffee.service.ProductService;
++import lombok.RequiredArgsConstructor;
++import org.springframework.http.ResponseEntity;
++import org.springframework.validation.annotation.Validated;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.RequestBody;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RestController;
++
++@RestController
++@RequiredArgsConstructor
++@RequestMapping("/api/admin")
+ public class AdminApiController {
++    private final ProductService productService;
++
++    @PostMapping("/product/add")
++    public ResponseEntity<Product> newProduct(@Validated @RequestBody ProductDTO productDTO) {
++
++        return ResponseEntity.ok(productService.addProduct(productDTO));
++    }
++
+ }
+Index: gc-coffee/src/main/java/hello/gccoffee/service/ProductService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.service;\r\n\r\npublic class ProductService {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/service/ProductService.java b/gc-coffee/src/main/java/hello/gccoffee/service/ProductService.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/service/ProductService.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/service/ProductService.java	(date 1725928603033)
+@@ -1,4 +1,37 @@
+ package hello.gccoffee.service;
+ 
++import hello.gccoffee.dto.ProductDTO;
++import hello.gccoffee.entity.Product;
++import hello.gccoffee.repository.ProductRepository;
++import lombok.RequiredArgsConstructor;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.stereotype.Service;
++
++import java.util.List;
++
++@Service
++@RequiredArgsConstructor
++@Slf4j
+ public class ProductService {
++
++    private final ProductRepository productRepository;
++
++    public Product addProduct(ProductDTO productDTO) {
++
++        Product product = productDTO.toEntity();
++        productRepository.save(product);
++        return product;
++    }
++
++    public Product findById(int productId) {
++        return productRepository.findById(productId).orElseThrow();
++    }
++
++    public List<Product> findAll() {
++        return productRepository.findAll();
++    }
++
++    public Product findByName(String productName) {
++        return productRepository.findByProductName(productName);
++    }
+ }
+Index: gc-coffee/src/main/java/hello/gccoffee/service/OrderService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.service;\r\n\r\nimport hello.gccoffee.dto.OrderDTO;\r\nimport hello.gccoffee.entity.Order;\r\nimport hello.gccoffee.repository.OrderRepository;\r\nimport lombok.RequiredArgsConstructor;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport static hello.gccoffee.entity.OrderEnum.ORDER_ACCEPTED;\r\n\r\n@Service\r\n@RequiredArgsConstructor\r\n@Slf4j\r\npublic class OrderService implements OrderMainService{\r\n    private final OrderRepository orderRepository;\r\n\r\n    public Order addOrders(OrderDTO orderDTO) {\r\n        log.info(\"DTO정보 = {},{},{}\",orderDTO.getEmail(),orderDTO.getAddress(),orderDTO.getPostcode());\r\n        Order order = orderDTO.toEntity();\r\n\r\n        orderRepository.save(order);\r\n        return order;\r\n    }\r\n\r\n    public Order findById(int orderId) {\r\n        return orderRepository.findById(orderId).orElseThrow();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/service/OrderService.java b/gc-coffee/src/main/java/hello/gccoffee/service/OrderService.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/service/OrderService.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/service/OrderService.java	(date 1725932338509)
+@@ -7,8 +7,6 @@
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.stereotype.Service;
+ 
+-import static hello.gccoffee.entity.OrderEnum.ORDER_ACCEPTED;
+-
+ @Service
+ @RequiredArgsConstructor
+ @Slf4j
+Index: gc-coffee/src/main/java/hello/gccoffee/service/OrderItemService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hello.gccoffee.service;\r\n\r\nimport hello.gccoffee.dto.OrderItemDTO;\r\nimport hello.gccoffee.entity.Order;\r\nimport hello.gccoffee.entity.OrderItem;\r\nimport hello.gccoffee.repository.OrderItemRepository;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.springframework.stereotype.Service;\r\nimport org.springframework.transaction.annotation.Transactional;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n@Service\r\n@RequiredArgsConstructor\r\n@Transactional\r\npublic class OrderItemService implements OrderMainService{\r\n\r\n    private final OrderItemRepository orderItemRepository;\r\n\r\n    public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {\r\n        List<OrderItem> orderItemList = new ArrayList<>();\r\n        for (OrderItemDTO item : items) {\r\n            String productName = item.getProductName();\r\n            int productId = 0;//productName -> productId 반환 메서드 넣어주기\r\n            OrderItem orderItem = item.toEntity(productId, order.getOrderId());\r\n            orderItemRepository.save(orderItem);\r\n            orderItemList.add(orderItem);\r\n        }\r\n        return orderItemList;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gc-coffee/src/main/java/hello/gccoffee/service/OrderItemService.java b/gc-coffee/src/main/java/hello/gccoffee/service/OrderItemService.java
+--- a/gc-coffee/src/main/java/hello/gccoffee/service/OrderItemService.java	(revision a088c7536a655d3896be055bb0dcbcc7d69e9f5a)
++++ b/gc-coffee/src/main/java/hello/gccoffee/service/OrderItemService.java	(date 1725928312256)
+@@ -3,7 +3,9 @@
+ import hello.gccoffee.dto.OrderItemDTO;
+ import hello.gccoffee.entity.Order;
+ import hello.gccoffee.entity.OrderItem;
++import hello.gccoffee.entity.Product;
+ import hello.gccoffee.repository.OrderItemRepository;
++import hello.gccoffee.repository.ProductRepository;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
+@@ -17,15 +19,20 @@
+ public class OrderItemService implements OrderMainService{
+ 
+     private final OrderItemRepository orderItemRepository;
++    private final ProductRepository productRepository; //문제점1
+ 
+     public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
+         List<OrderItem> orderItemList = new ArrayList<>();
+         for (OrderItemDTO item : items) {
++
++            //문제1 productName을 productId로 변환하기 위해 productRepository에 의존하는 게 맞는가?
+             String productName = item.getProductName();
+-            int productId = 0;//productName -> productId 반환 메서드 넣어주기
++            Product product = productRepository.findByProductName(productName);
++            int productId = product.getProductId();
++
+             OrderItem orderItem = item.toEntity(productId, order.getOrderId());
+             orderItemRepository.save(orderItem);
+-            orderItemList.add(orderItem);
++            order.addOrderItem(orderItem);
+         }
+         return orderItemList;
+     }

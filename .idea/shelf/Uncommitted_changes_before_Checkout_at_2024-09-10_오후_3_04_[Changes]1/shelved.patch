@@ -1,0 +1,58 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"09bc3907-dac2-4bbd-9c78-a85cd3671f59\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/gc-coffee/build.gradle\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/gc-coffee/build.gradle\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/OrderItem.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/OrderItem.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Product.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Product.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$/gc-coffee\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand />\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Enum\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitToolBoxStore\">\r\n    <option name=\"recentBranches\">\r\n      <RecentBranches>\r\n        <option name=\"branchesForRepo\">\r\n          <list>\r\n            <RecentBranchesForRepo>\r\n              <option name=\"branches\">\r\n                <list>\r\n                  <RecentBranch>\r\n                    <option name=\"branchName\" value=\"dev\" />\r\n                    <option name=\"lastUsedInstant\" value=\"1725848274\" />\r\n                  </RecentBranch>\r\n                  <RecentBranch>\r\n                    <option name=\"branchName\" value=\"feat/add-product\" />\r\n                    <option name=\"lastUsedInstant\" value=\"1725847670\" />\r\n                  </RecentBranch>\r\n                  <RecentBranch>\r\n                    <option name=\"branchName\" value=\"main\" />\r\n                    <option name=\"lastUsedInstant\" value=\"1725847112\" />\r\n                  </RecentBranch>\r\n                </list>\r\n              </option>\r\n              <option name=\"repositoryRootUrl\" value=\"file://$PROJECT_DIR$\" />\r\n            </RecentBranchesForRepo>\r\n          </list>\r\n        </option>\r\n      </RecentBranches>\r\n    </option>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 7\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2loWIkD6I0ADkaIrrEs9axjUCS8\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"ignore_missing_gitignore\": \"true\",\r\n    \"last_opened_file_path\": \"/Users/juwonju/dev/workspace/NBE1_2_TEAM5\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"GcCoffeeApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\r\n      <option name=\"FRAME_DEACTIVATION_UPDATE_POLICY\" value=\"UpdateClassesAndResources\" />\r\n      <module name=\"gc-coffee.main\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"hello.gccoffee.GcCoffeeApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"09bc3907-dac2-4bbd-9c78-a85cd3671f59\" name=\"Changes\" comment=\"\" />\r\n      <created>1725846831743</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725846831743</updated>\r\n      <workItem from=\"1725846833008\" duration=\"4504000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,12 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="09bc3907-dac2-4bbd-9c78-a85cd3671f59" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/gc-coffee/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/build.gradle" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/OrderItem.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Product.java" afterDir="false" />
+-    </list>
++    <list default="true" id="09bc3907-dac2-4bbd-9c78-a85cd3671f59" name="Changes" comment="fix: &quot;주문 생성 구현&quot;&#10;예외 생성" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -74,11 +69,11 @@
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 7
+-}]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 7
++}</component>
+   <component name="ProjectId" id="2loWIkD6I0ADkaIrrEs9axjUCS8" />
+-  <component name="ProjectLevelVcsManager">
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+     <ConfirmationsSetting value="1" id="Add" />
+   </component>
+   <component name="ProjectViewState">
+@@ -91,6 +86,7 @@
+     "RunOnceActivity.OpenProjectViewOnStart": "true",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "WebServerToolWindowFactoryState": "false",
++    "git-widget-placeholder": "order",
+     "ignore_missing_gitignore": "true",
+     "last_opened_file_path": "/Users/juwonju/dev/workspace/NBE1_2_TEAM5",
+     "node.js.detected.package.eslint": "true",
+@@ -126,4 +122,8 @@
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="fix: &quot;주문 생성 구현&quot;&#10;예외 생성" />
++    <option name="LAST_COMMIT_MESSAGE" value="fix: &quot;주문 생성 구현&quot;&#10;예외 생성" />
++  </component>
+ </project>
+\ No newline at end of file
