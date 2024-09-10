@@ -71,7 +71,7 @@ public class OrderItemService {
                     }
                 }
                 orderItemRepository.save(orderItem);
-                order.addOrderItem(orderItem);
+                order.addOrderItems(orderItem);
             } catch (Exception e) {
                 throw OrderException.ORDER_ITEM_NOT_REGISTERED.get();
             }

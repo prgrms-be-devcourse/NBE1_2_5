@@ -5,23 +5,23 @@ import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.exception.OrderException;
-import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.service.OrderItemService;
+import hello.gccoffee.service.OrderMainService;
 import hello.gccoffee.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import hello.gccoffee.service.OrderMainService;
-import lombok.extern.log4j.Log4j2;
+
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/orders")
 @Log4j2
 public class OrderApiController {
     private final OrderMainService orderMainService;

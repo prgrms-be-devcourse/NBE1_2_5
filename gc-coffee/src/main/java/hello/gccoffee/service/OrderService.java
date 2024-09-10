@@ -2,6 +2,7 @@ package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.entity.Order;
+import hello.gccoffee.entity.OrderEnum;
 import hello.gccoffee.exception.OrderException;
 import hello.gccoffee.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,10 @@ public class OrderService {
     }
 
     public Order addOrders(OrderDTO orderDTO) {
-
+        //추가과정1. 같은 이메일로 등록시 어떻게 처리할것인지?
         try {
             Order order = orderDTO.toEntity();
+            order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
             orderRepository.save(order);
             return order;
         } catch (Exception e) {
