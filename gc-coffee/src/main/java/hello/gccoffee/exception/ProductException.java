@@ -14,7 +14,7 @@ public enum ProductException {
         productTaskException = new ProductTaskException(message, code);
     }
 
-    public ProductTaskException get(){
+    public ProductTaskException get() {
         return productTaskException;
     }
 }

@@ -1,7 +1,6 @@
 package hello.gccoffee.controller.advice;
 
 import hello.gccoffee.exception.ProductTaskException;
-import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -26,7 +25,7 @@ public class AdminApiControllerAdvice {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleProductTaskException(HttpMessageNotReadableException e) {
         Map<String, String> map = new HashMap<>();
-        map.put("error", "[JSON]"+" 형식을 확인해주세요");
+        map.put("error", "[JSON]" + " 형식을 확인해주세요");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 
@@ -36,11 +35,11 @@ public class AdminApiControllerAdvice {
         map.put("error", e.getMessage().substring(e.getMessage().indexOf("[*")));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<Map<String, String>> handleProductTaskException(NoResourceFoundException e) {
         Map<String, String> map = new HashMap<>();
         map.put("error", "URL을 잘못 입력하였습니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
-
 }
