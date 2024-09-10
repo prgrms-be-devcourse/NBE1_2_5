@@ -21,13 +21,15 @@ public class AdminApiController {
     }
 
     @GetMapping("/{pno}")
-    public ResponseEntity<ProductDTO> read(@PathVariable("pno") long pno) {
+    public ResponseEntity<ProductDTO> read(@PathVariable("pno") int pno) {
         log.info("Product id " + pno);
         return ResponseEntity.ok(productService.read(pno));
     }
 
-    @PutMapping
-    public ResponseEntity<ProductDTO> update(@Validated @RequestBody ProductDTO productDTO) {
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductDTO> update(@PathVariable("productId") int productId,
+                                             @Validated @RequestBody ProductDTO productDTO) {
+        productDTO.setProductId(productId);
         ProductDTO modifiedProductDTO = productService.modify(productDTO);
         return ResponseEntity.ok(modifiedProductDTO);
     }

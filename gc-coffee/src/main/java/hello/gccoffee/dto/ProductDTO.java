@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ProductDTO {
 
-    private Long productId;
+    private Integer productId;
 
     @NotBlank(message = "상품 이름을 입력해 주세요.")
     private String productName;
@@ -27,7 +27,7 @@ public class ProductDTO {
     private Category category;
 
     @NotNull(message = "*가격은 필수 입력 값입니다.")
-    @Range(min = 1000, max = 100_000, message = "*1000원 이상, 100,000원 이하로 주문 부탁드립니다.")
+    @Range(min = 1000, max = 100_000, message = "*1000원 이상, 100,000원 이하로 등록 부탁드립니다.")
     private Integer price;
 
     private String description;

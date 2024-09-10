@@ -31,7 +31,7 @@ public class ProductService {
         }
     }
 
-    public ProductDTO read(Long pno) {     //상품 조회
+    public ProductDTO read(int pno) {     //상품 조회
         Product product = productRepository.findById(pno).orElseThrow(ProductException.NOT_FOUND::get);
         return new ProductDTO(product);
     }
