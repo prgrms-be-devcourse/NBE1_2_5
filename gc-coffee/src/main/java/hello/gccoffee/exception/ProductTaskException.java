@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ProductTaskException extends RuntimeException{
     private String message;
-    private int code;
-}
+    private int code;}
+
