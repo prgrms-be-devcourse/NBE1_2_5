@@ -22,6 +22,7 @@ public class ProductDTO {
 
     @NotBlank(message = "상품 이름을 입력해 주세요.")
     private String productName;
+
     @NotNull(message = "*카테고리는 필수 입력 값입니다.")
     private Category category;
 

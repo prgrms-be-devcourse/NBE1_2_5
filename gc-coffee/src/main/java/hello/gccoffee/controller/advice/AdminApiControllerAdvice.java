@@ -42,4 +42,20 @@ public class AdminApiControllerAdvice {
         map.put("error", "URL을 잘못 입력하였습니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        Map<String, Object> errMap = new HashMap<>();
+        errMap.put("message", e.getFieldError().getDefaultMessage());
+        errMap.put("code", 400);
+        return new ResponseEntity<>(errMap, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        Map<String, Object> errMap = new HashMap<>();
+        errMap.put("message", "존재하지 않는 상품 카테고리입니다");
+        errMap.put("code", 400);
+        return new ResponseEntity<>(errMap, HttpStatus.BAD_REQUEST);
+    }
 }
