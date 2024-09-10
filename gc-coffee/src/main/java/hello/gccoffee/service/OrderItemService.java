@@ -62,6 +62,9 @@ public class OrderItemService {
                 //문제1 productName을 productId로 변환하기 위해 productRepository에 의존하는 게 맞는가?
                 String productName = item.getProductName();
                 Product product = productRepository.findByProductName(productName);
+                    if (product == null) {
+                        throw OrderException.ORDER_ITEM_NOT_FOUND.get();
+                    }
                 int productId = product.getProductId();
 
                 OrderItem orderItem = item.toEntity(productId, order.getOrderId());
