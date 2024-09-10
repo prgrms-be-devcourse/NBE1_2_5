@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="09bc3907-dac2-4bbd-9c78-a85cd3671f59" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/gc-coffee/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/gc-coffee/src/main/java/hello/gccoffee/entity/Product.java" afterDir="false" />
+    <list default="true" id="09bc3907-dac2-4bbd-9c78-a85cd3671f59" name="Changes" comment="fix: &quot;주문 생성 구현&quot;&#10;예외 생성">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +38,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="order" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitToolBoxStore">
@@ -51,12 +54,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="dev" />
-                    <option name="lastUsedInstant" value="1725848274" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="feat/add-product" />
-                    <option name="lastUsedInstant" value="1725847670" />
+                    <option name="branchName" value="topic_create_order" />
+                    <option name="lastUsedInstant" value="1725948256" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -71,14 +70,20 @@
       </RecentBranches>
     </option>
   </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/prgrms-be-devcourse/NBE1_2_TEAM5.git",
+    "accountId": "87c812ce-f3ea-4ecd-a2b2-cf1cf980e17b"
+  }
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2loWIkD6I0ADkaIrrEs9axjUCS8" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -91,6 +96,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "topic__create__order",
     "ignore_missing_gitignore": "true",
     "last_opened_file_path": "/Users/juwonju/dev/workspace/NBE1_2_TEAM5",
     "node.js.detected.package.eslint": "true",
@@ -102,6 +108,17 @@
   }
 }]]></component>
   <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GcCoffeeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="gc-coffee.main" />
@@ -125,5 +142,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix: &quot;주문 생성 구현&quot;&#10;예외 생성" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: &quot;주문 생성 구현&quot;&#10;예외 생성" />
   </component>
 </project>
