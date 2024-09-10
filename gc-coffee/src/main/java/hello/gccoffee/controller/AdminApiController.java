@@ -44,6 +44,14 @@ public class AdminApiController {
         log.info("--- remove() ---");
         log.info("--- pno : " + pno + " ---");
 
+        // 비밀번호가 없을 때 예외 처리
+        if (adminPassword == null || adminPassword.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "result", "error",
+                    "message", "Admin password is required"
+            ));
+        }
+
         // 관리자 인증??
         if (!"1111".equals(adminPassword)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
