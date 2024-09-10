@@ -45,8 +45,5 @@ public class OrderDTO {
                 .address(address)
                 .postcode(postcode)
                 .build();
-
-
-
     }
 }

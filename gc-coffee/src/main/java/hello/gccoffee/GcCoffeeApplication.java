@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class GcCoffeeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GcCoffeeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GcCoffeeApplication.class, args);
+    }
 
 }
