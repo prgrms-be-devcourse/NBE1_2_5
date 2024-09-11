@@ -48,4 +48,24 @@ public class OrderItemService {
         return orderItemDTOS;
     }
 
+
+    public List<OrderItemDTO> getAllOrders() {
+        List<OrderItem> orderItemList = orderItemRepository.findAll();
+        List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
+        if (orderItemList == null) {
+            return orderItemDTOS;
+        }
+        orderItemList.forEach(orderItem -> {
+            orderItemDTOS.add(OrderItemDTO.builder()
+                    .email(orderItem.getOrder().getEmail())
+                    .address(orderItem.getOrder().getAddress())
+                    .postcode(orderItem.getOrder().getPostcode())
+                    .productName(orderItem.getProduct().getProductName())
+                    .price(orderItem.getPrice())
+                    .quantity(orderItem.getQuantity())
+                    .category(orderItem.getCategory())
+                    .build());
+        });
+        return orderItemDTOS;
+    }
 }

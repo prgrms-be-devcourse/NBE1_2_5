@@ -2,6 +2,8 @@ package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.dto.OrderItemDTO;
+import hello.gccoffee.repository.OrderItemRepository;
+import hello.gccoffee.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class OrderMainService {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
+    private final OrderItemRepository orderItemRepository;
 
     // 주문 조회
     public List<OrderItemDTO> readOrder(String email) {
@@ -26,5 +29,11 @@ public class OrderMainService {
 
         log.info("orderMainservice ===> getAllItems " + orderItemService.getAllItems(orderDTO.getOrderId()));
         return orderItemService.getAllItems(orderDTO.getOrderId());
+    }
+
+
+    public List<OrderItemDTO> getList() {
+        return orderItemService.getAllOrders();
+
     }
 }

@@ -1,5 +1,6 @@
 package hello.gccoffee.repository;
 
+import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.OrderItem;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,5 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
     @Query("SELECT o From OrderItem o  " +
             "WHERE o.order.orderId = :orderId")
     Optional<List<OrderItem>> findByOrderId(@Param("orderId") int orderId);
+
 }

@@ -5,6 +5,7 @@ import hello.gccoffee.exception.OrderException;
 import hello.gccoffee.service.OrderMainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,4 +37,24 @@ public class OrderApiController {
         log.info("APIController ===> orderMainService에서 orderItemDTOs 반환 : " + orderItemDTOS);
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
+
+    @GetMapping("/orderlist")   //관리자 주문 목록 조회
+    public ResponseEntity<?> getList(@RequestParam("adminPassword") String adminPassword) {
+
+        log.info("===== getList() =====");
+
+        //비밀번호 없을 때
+        if (adminPassword == null || adminPassword.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin password is required");
+        }
+
+        //비밀번호 틀렸을 때
+        if (!"1111".equals(adminPassword)){
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Incorrect admin password.");
+        }
+        return ResponseEntity.ok(orderMainService.getList());
+    }
+
 }
