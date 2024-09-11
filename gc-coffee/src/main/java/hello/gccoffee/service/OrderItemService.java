@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,10 +59,13 @@ public class OrderItemService {
         return orderItemDTOS;
     }
     //관리자 주문 수정
-    public OrderItemDTO modify(OrderItemDTO orderItemDTO, Order order, int orderItemId) {
+    public OrderItemDTO modify(OrderItemDTO orderItemDTO, List<Order> order, int orderItemId) {
+        // 1개의 order 찾기
+        List<Order> collectOrderItemId = order.stream().filter(i -> i.getOrderId() == orderItemId).toList();
+        Order foundOrder = collectOrderItemId.get(0);
 
         //수정할 주문상세 페이지 찾기
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(order.getOrderId())
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(foundOrder.getOrderId())
                 .orElseThrow(OrderException.NOT_FOUND_ORDER_ID::get);
         List<OrderItem> collect = orderItemList.stream().filter(i -> i.getOrderItemId()==orderItemId).toList();
         OrderItem orderItem = collect.get(0);
@@ -71,7 +75,7 @@ public class OrderItemService {
 
         //수정
         orderItem.changeProduct(foundProduct);
-        orderItem.changeOrder(order);
+        orderItem.changeOrder(foundOrder);
         orderItem.changeCategory(orderItemDTO.getCategory());
         orderItem.changeQuantity(orderItemDTO.getQuantity());
         orderItem.changePrice(orderItemDTO.getPrice());
