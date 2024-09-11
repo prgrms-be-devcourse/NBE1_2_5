@@ -38,23 +38,6 @@ public class OrderApiController {
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
 
-    @GetMapping("/orderlist")   //관리자 주문 목록 조회
-    public ResponseEntity<?> getList(@RequestParam("adminPassword") String adminPassword) {
 
-        log.info("===== getList() =====");
-
-        //비밀번호 없을 때
-        if (adminPassword == null || adminPassword.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin password is required");
-        }
-
-        //비밀번호 틀렸을 때
-        if (!"1111".equals(adminPassword)){
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body("Incorrect admin password.");
-        }
-        return ResponseEntity.ok(orderMainService.getList());
-    }
 
 }
