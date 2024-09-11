@@ -1,9 +1,11 @@
 package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
+import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.Order;
-import hello.gccoffee.entity.OrderEnum;
+import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.exception.OrderException;
+import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -35,13 +37,60 @@ public class OrderService {
             Order order = orderDTO.toEntity();
             orderRepository.save(order);
             return order;
-        } catch (Exception e) {
+        } catch (OrderTaskException e) {
             throw OrderException.ORDER_NOT_REGISTERED.get();
         }
     }
 
     public Order findById(int orderId) {
         return orderRepository.findById(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+    }
+
+    public boolean deleteOneOrderOfOne(int OrderId) {
+        try {
+            Order order = orderRepository.findById(OrderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+            orderRepository.delete(order);
+            return true;
+        } catch (OrderTaskException e) {
+            return false;
+        } catch (Exception e) {
+            return orderRepository.findById(OrderId).orElse(null) == null;
+        }
+
+    }
+
+    public boolean deleteOneItemInOrder(OrderItemDTO orderItemDTO,int productId, int orderId){
+        Order byIdOrder = findById(orderId);
+        OrderItem orderItem = orderItemDTO.toEntity(productId, orderId);
+        if (byIdOrder.getOrderItems().contains(orderItem)) {
+            byIdOrder.getOrderItems().remove(orderItem);
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean deleteAllOrderOfOne(String email) {
+        List<Order> allByEmail = orderRepository.findAllByEmail(email);
+        try {
+            if (allByEmail.isEmpty()) return true;
+            for (Order order : allByEmail) {
+                orderRepository.delete(order);
+            }
+            return true;
+        } catch (Exception e) {
+            return allByEmail.isEmpty();
+        }
+
+    }
+
+    public List<Order> findAllByEmail(String email){
+        return orderRepository.findAllByEmail(email);
+    }
+
+    public List<Integer> findOrderIdsByEmail(String email) {
+        log.info("문제지점2-1");
+        return orderRepository.findOrderIdByEmail(email);
     }
 
     public List<Order> findAllByEmail(String email) {
