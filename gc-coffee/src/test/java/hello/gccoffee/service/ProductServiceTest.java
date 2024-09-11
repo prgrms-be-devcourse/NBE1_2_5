@@ -51,6 +51,7 @@ public class ProductServiceTest {
         // Then
         assertFalse(productRepository.findById(productId).isPresent(), "Product should not be present");
     }
+
     @Test
     public void testRemoveProductSuccessfully2() {
         // Given
