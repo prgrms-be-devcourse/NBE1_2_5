@@ -4,6 +4,8 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,21 +22,22 @@ public class OrderItemDTO {
 //    private int productId;
 //    private int orderId;
 
-    @NotBlank
+    @NotBlank(message = "이메일을 입력해주세요")
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "주소를 입력해주세요")
     private String address;
 
-    @NotBlank
+    @NotBlank(message = "우편번호를 입력해주세요")
     private String postcode;
 
-    @NotBlank
+    @NotBlank(message = "상품이름을 입력해주세요")
     private String productName;
 
     @NotNull
     @Min(0)
+    @Max(1_000_000)
     private int price;
 
     @NotNull
@@ -42,6 +45,7 @@ public class OrderItemDTO {
     @Max(100)
     private int quantity;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Category category;
 
