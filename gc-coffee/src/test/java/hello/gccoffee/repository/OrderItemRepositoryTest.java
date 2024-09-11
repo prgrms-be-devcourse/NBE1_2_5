@@ -44,7 +44,7 @@ public class OrderItemRepositoryTest {
         Category category = COFFEE_BEAN_PACKAGE;
         int price = 1111;
         int quantity = 1;
-        Product productId = productRepository.findByProductName(productName).get();
+        Product productId = productRepository.findByProductName(productName);
         log.info(productId);
     }
     @Test

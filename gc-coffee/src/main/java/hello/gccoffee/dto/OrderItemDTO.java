@@ -4,15 +4,9 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
-<<<<<<< HEAD
-
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
-
-=======
-import jakarta.validation.constraints.*;
->>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,27 +35,18 @@ public class OrderItemDTO {
     @NotBlank(message = "상품이름을 입력해주세요")
     private String productName;
 
-<<<<<<< HEAD
-=======
     @NotNull
->>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
     @Min(0)
     @Max(1_000_000)
     private int price;
 
-<<<<<<< HEAD
-=======
     @NotNull
->>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
     @Min(0)
     @Max(100)
     private int quantity;
 
-<<<<<<< HEAD
     @Enumerated(EnumType.STRING)
-=======
     @NotNull
->>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
     private Category category;
 
     public OrderItemDTO(OrderItem orderItem) {
