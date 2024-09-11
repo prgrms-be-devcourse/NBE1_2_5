@@ -38,18 +38,18 @@ public class OrderItemDTO {
     @NotBlank(message = "상품이름을 입력해주세요")
     private String productName;
 
-    @NotNull
+    @NotNull(message = "가격을 입력해주세요")
     @Min(0)
     @Max(1_000_000)
     private int price;
 
-    @NotNull
+    @NotNull(message = "수량을 입력해주세요")
     @Min(0)
     @Max(100)
     private int quantity;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "카테고리를 입력해주세요")
     private Category category;
 
     public OrderItemDTO(OrderItem orderItem) {
@@ -59,7 +59,7 @@ public class OrderItemDTO {
         address = orderItem.getOrder().getAddress();
         postcode = orderItem.getOrder().getPostcode();
         productName = orderItem.getProduct().getProductName();
-        price = orderItem.getProduct().getPrice();
+        price = orderItem.getPrice();
         quantity = orderItem.getQuantity();
         category = orderItem.getCategory();
     }
