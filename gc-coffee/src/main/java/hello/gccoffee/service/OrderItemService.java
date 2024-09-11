@@ -155,5 +155,29 @@ public class OrderItemService {
     public void deleteoneTem(String email, int orderId, int orderItemId) {
         orderItemRepository.deleteByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId);
     }
+
+    // 해당 OrderItem을 새로운 내역으로 수정
+    public OrderItemDTO updateOrderItem(OrderItemDTO orderItemDTO) {
+        OrderItem orderItem = orderItemRepository.findById(orderItemDTO.getOrderItemId())
+                .orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
+
+        Product foundProduct = productRepository.findByProductName(orderItemDTO.getProductName());
+        if (foundProduct == null) throw OrderException.BAD_RESOURCE.get();
+
+        // 수량이 0인 경우 예외 -> OrderItem 삭제 기능 사용하도록 유도
+        if (orderItemDTO.getQuantity() == 0) {
+            throw OrderException.INVALID_ORDER_ITEM_QUANTITY.get();
+        }
+
+        try {
+            orderItem.changeProduct(foundProduct);
+            orderItem.changeCategory(foundProduct.getCategory());
+            orderItem.changePrice(foundProduct.getPrice());
+            orderItem.changeQuantity(orderItemDTO.getQuantity());
+            return new OrderItemDTO(orderItem);
+        } catch (OrderTaskException e) {
+            throw OrderException.ORDER_ITEM_NOT_UPDATED.get();
+        }
+    }
 }
 
