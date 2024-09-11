@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,21 +28,15 @@ public class OrderApiController {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
 
-
-
     @GetMapping
     public ResponseEntity<List<OrderItemDTO>> read(@RequestParam("email") String email) {
         log.info("===== read() =====");
 
-        // email 값이 비어있는 경우
-        if (email == null || email.trim().isEmpty()) {
-            throw OrderException.MISSING_EMAIL.get();
-        }
+        checkEmail(email);
 
-        // email 형식이 잘못된 경우
-        if (!email.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$")) {
-            throw OrderException.INVALID_EMAIL.get();
-        }
+        log.info("APIController ===> orderItemsDTOS 호출");
+        List<OrderItemDTO> orderItemDTOS = orderMainService.readOrder(email);
+        log.info("APIController ===> orderMainService에서 orderItemDTOs 반환 : " + orderItemDTOS);
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
 
@@ -70,4 +65,43 @@ public class OrderApiController {
 
         return ResponseEntity.ok(findOrder);
     }
+
+    // 주문, 주문자 전체 삭제
+    @DeleteMapping
+    public ResponseEntity<Map<String, String>> delete(@RequestParam("email") String email) {
+        checkEmail(email);
+        orderMainService.removeAll(email);
+        return ResponseEntity.ok(Map.of(
+                "result", "success",
+                "message", "Orders have been deleted successfully"
+        ));
+    }
+
+    // 원하는 주문만 삭제
+    @DeleteMapping("/{orderId}/{orderItemId}")
+    public ResponseEntity<Map<String, String>> deleteOrder(@RequestParam("email") String email,
+                                                           @PathVariable int orderId,
+                                                           @PathVariable int orderItemId) {
+        checkEmail(email);
+        orderMainService.removeOrder(email, orderId, orderItemId);
+        return ResponseEntity.ok(Map.of(
+                "result", "success",
+                "message", "Order has been deleted successfully"
+        ));
+    }
+
+
+
+    private static void checkEmail(String email) {
+        // email 값이 비어있는 경우
+        if (email == null || email.trim().isEmpty()) {
+            throw OrderException.MISSING_EMAIL.get();
+        }
+
+        // email 형식이 잘못된 경우
+        if (!email.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$")) {
+            throw OrderException.INVALID_EMAIL.get();
+        }
+    }
 }
+

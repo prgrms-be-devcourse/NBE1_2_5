@@ -108,7 +108,13 @@ public class OrderItemService {
                 }
                 order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
                 return orderItemList;
-
     }
 
+    public void deleteAllItems(int orderId) {
+        orderItemRepository.deleteByOrderOrderId(orderId);
+    }
+
+    public void deleteoneItem(String email, int orderId, int orderItemId) {
+        orderItemRepository.deleteByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId);
+    }
 }

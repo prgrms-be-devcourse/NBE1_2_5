@@ -1,5 +1,6 @@
 package hello.gccoffee.controller.advice;
 
+import hello.gccoffee.exception.AdminAuthenticationException;
 import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.exception.ProductTaskException;
 import lombok.extern.log4j.Log4j2;
@@ -47,7 +48,6 @@ public class AdminApiControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 
-
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, String>> handleProductTaskException(MethodArgumentTypeMismatchException e) {
         Map<String, String> map = new HashMap<>();
@@ -61,5 +61,21 @@ public class AdminApiControllerAdvice {
 
         Map<String, String> errMap = Map.of("error", e.getMessage());
         return ResponseEntity.status(e.getCode()).body(errMap);
+    }
+
+    @ExceptionHandler(AdminAuthenticationException.class)
+    public ResponseEntity<Map<String, String>> handleAdminAuthenticationException(AdminAuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                "result", "error",
+                "message", e.getMessage()
+        ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneralException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "result", "error",
+                "message", "An unexpected error occurred"
+        ));
     }
 }
