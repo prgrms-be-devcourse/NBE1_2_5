@@ -139,7 +139,6 @@ public class OrderApiController {
         if (orderIdsByEmail.contains(orderId)) {
             //삭제로직
             try {
-                List<OrderItemDTO> allItems = orderItemService.getAllItems(orderId);
                 Integer productId = orderItemService.deleteOneItem(orderItemDTO, orderId);
                 orderService.deleteOneItemInOrder(orderItemDTO, productId, orderId);
             } catch (OrderTaskException e) {
