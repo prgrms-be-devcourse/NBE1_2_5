@@ -31,8 +31,10 @@ public class OrderMainService {
         return orderItemService.getAllItems(orderDTO.getOrderId());
     }
 
-
+    
+    //주문 목록 조회
     public List<OrderItemDTO> getList() {
+        log.info("OrderMainService ===> getList() ");
         return orderItemService.getAllOrders();
 
     }

@@ -48,13 +48,12 @@ public class OrderItemService {
         return orderItemDTOS;
     }
 
-
+    //모든 주문 목록 조회
     public List<OrderItemDTO> getAllOrders() {
+        log.info("OrderItemService ===> getAllOrders() ");
         List<OrderItem> orderItemList = orderItemRepository.findAll();
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
-        if (orderItemList == null) {
-            return orderItemDTOS;
-        }
+
         orderItemList.forEach(orderItem -> {
             orderItemDTOS.add(OrderItemDTO.builder()
                     .email(orderItem.getOrder().getEmail())
