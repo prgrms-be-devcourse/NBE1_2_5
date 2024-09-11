@@ -48,4 +48,8 @@ public class OrderItemService {
         return orderItemDTOS;
     }
 
+    public void deleteAllItems(int orderId) {
+        orderItemRepository.deleteByOrderOrderId(orderId);
+    }
+
 }

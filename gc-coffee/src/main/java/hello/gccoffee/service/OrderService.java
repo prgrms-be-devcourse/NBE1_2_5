@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,4 +24,12 @@ public class OrderService {
         return new OrderDTO(foundOrder);
     }
 
+    public List<Order> findAllByEmail(String email) {
+        List<Order> foundOrders = orderRepository.findAllByEmail(email);
+        return foundOrders;
+    }
+
+    public void deleteOrder(String email) {
+        orderRepository.deleteByEmail(email);
+    }
 }
