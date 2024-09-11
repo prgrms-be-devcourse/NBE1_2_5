@@ -10,7 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+<<<<<<< HEAD
     @Query("SELECT p FROM Product p WHERE p.productName=:productName")
     Optional<Product> findByProductName(@Param("productName") String productName);
 
+=======
+
+    Product findByProductName(String productName);
+>>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
 }

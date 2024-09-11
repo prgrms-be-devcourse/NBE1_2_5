@@ -87,6 +87,7 @@ public class AdminApiController {
             ));
         }
     }
+<<<<<<< HEAD
     @PutMapping
     public ResponseEntity<OrderItemDTO> update(@Validated
                                                @RequestBody OrderItemDTO orderItemDTO,
@@ -96,3 +97,6 @@ public class AdminApiController {
         return ResponseEntity.ok(orderItemDTOS);
     }
 }
+=======
+}
+>>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73

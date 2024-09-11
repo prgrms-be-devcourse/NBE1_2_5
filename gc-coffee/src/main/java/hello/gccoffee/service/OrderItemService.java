@@ -1,5 +1,12 @@
 package hello.gccoffee.service;
 
+
+
+import hello.gccoffee.entity.Order;
+import hello.gccoffee.entity.OrderEnum;
+import hello.gccoffee.entity.Product;
+import hello.gccoffee.repository.ProductRepository;
+
 import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
@@ -24,13 +31,22 @@ import java.util.Optional;
 @Log4j2
 public class OrderItemService {
     private final OrderItemRepository orderItemRepository;
+<<<<<<< HEAD
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+=======
+    private final ProductRepository productRepository; //문제점1
+>>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
 
     // orderId(혹은 order)에 해당하는 상품들 조회
     public List<OrderItemDTO> getAllItems(int orderId) {
 
+<<<<<<< HEAD
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.NOT_FOUND_ORDERID::get);
+=======
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER_ID::get);
+        log.info("orderItemList: " + orderItemList);
+>>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
 
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
         if (orderItemList == null) {
@@ -52,6 +68,7 @@ public class OrderItemService {
     //관리자 주문 수정
     public OrderItemDTO modify(OrderItemDTO orderItemDTO, Order order, int orderItemId) {
 
+<<<<<<< HEAD
         //수정할 주문상세 페이지 찾기
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(order.getOrderId())
                 .orElseThrow(OrderException.NOT_FOUND_ORDERID::get);
@@ -72,4 +89,33 @@ public class OrderItemService {
 
         return new OrderItemDTO(orderItem);
     }
+=======
+    public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
+
+                List<OrderItem> orderItemList = new ArrayList<>();
+                for (OrderItemDTO item : items) {
+                //문제1 productName을 productId로 변환하기 위해 productRepository에 의존하는 게 맞는가?
+                String productName = item.getProductName();
+
+                Product product = productRepository.findByProductName(productName);
+                //상품 확인 절차
+                if (product == null) throw OrderException.BAD_RESOURCE.get();
+                if(product.getPrice()!=item.getPrice())throw OrderException.BAD_RESOURCE.get();
+                int productId = product.getProductId();
+
+                OrderItem orderItem = item.toEntity(productId, order.getOrderId());
+                //회원정보 확인 절차
+                if(!orderItem.getOrder().getEmail().equals(order.getEmail()))throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                if(!orderItem.getOrder().getPostcode().equals(order.getPostcode()))throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                if(!orderItem.getOrder().getAddress().equals(order.getAddress()))throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                //가격
+                orderItemRepository.save(orderItem);
+                order.addOrderItems(orderItem);
+                }
+                order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
+                return orderItemList;
+
+    }
+
+>>>>>>> ab196a4ea38809feeeadc3408bad92ef7c589b73
 }
