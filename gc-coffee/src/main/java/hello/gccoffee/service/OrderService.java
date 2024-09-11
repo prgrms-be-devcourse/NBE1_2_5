@@ -24,6 +24,10 @@ public class OrderService {
         Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
         return new OrderDTO(foundOrder);
     }
+    //Email 엔티티 받기
+    public List<Order> findEntityByEmail(String email) {
+        return orderRepository.findByEmails(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+    }
 
     public Order addOrders(OrderDTO orderDTO) {
         try {

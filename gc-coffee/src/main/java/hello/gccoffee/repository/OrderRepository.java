@@ -16,4 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findAllByEmail(String email);
 
     void deleteByEmail(String email);
+
+    @Query("SELECT o FROM Order o WHERE o.email = :email AND o.orderEnum = 'ORDER_ACCEPTED'")
+    Optional<List<Order>> findByEmails(String email);
 }
