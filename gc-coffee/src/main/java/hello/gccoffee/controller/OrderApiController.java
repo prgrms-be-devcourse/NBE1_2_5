@@ -66,15 +66,31 @@ public class OrderApiController {
         return ResponseEntity.ok(findOrder);
     }
 
+    // 주문, 주문자 전체 삭제
     @DeleteMapping
     public ResponseEntity<Map<String, String>> delete(@RequestParam("email") String email) {
         checkEmail(email);
-        orderMainService.removeOrder(email);
+        orderMainService.removeAll(email);
         return ResponseEntity.ok(Map.of(
                 "result", "success",
-                "message", "Product has been deleted successfully"
+                "message", "Orders have been deleted successfully"
         ));
     }
+
+    // 원하는 주문만 삭제
+    @DeleteMapping("/{orderId}/{orderItemId}")
+    public ResponseEntity<Map<String, String>> deleteOrder(@RequestParam("email") String email,
+                                                           @PathVariable int orderId,
+                                                           @PathVariable int orderItemId) {
+        checkEmail(email);
+        orderMainService.removeOrder(email, orderId, orderItemId);
+        return ResponseEntity.ok(Map.of(
+                "result", "success",
+                "message", "Order has been deleted successfully"
+        ));
+    }
+
+
 
     private static void checkEmail(String email) {
         // email 값이 비어있는 경우

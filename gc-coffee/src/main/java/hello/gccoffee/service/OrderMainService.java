@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,9 +35,9 @@ public class OrderMainService {
         return orderItemService.getAllItems(orderDTO.getOrderId());
     }
 
-    // 주문 삭제
-    public void removeOrder(String email) {
-        log.info("OrderMainService ===> removeOrder() ");
+    // 주문 주문자 전체 삭제
+    public void removeAll(String email) {
+        log.info("OrderMainService ===> removeAll() ");
         List<Order> orders = orderService.findAllByEmail(email);
 
         if (orders.isEmpty()) {
@@ -48,6 +49,13 @@ public class OrderMainService {
         }
 
         orderService.deleteOrder(email);
+    }
+
+    // 주문자의 원하는 주문만 삭제
+    public void removeOrder(String email, int orderId, int orderItemId) {
+        log.info("OrderMainService ===> removeOrder() ");
+        Order order = orderService.getOrders(email, orderId, orderItemId);
+        orderItemService.deleteoneItem(email, orderId, orderItemId);
     }
 
     // 관리자 주문 수정
