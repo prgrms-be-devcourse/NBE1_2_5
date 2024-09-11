@@ -26,7 +26,6 @@ public class OrderMainService {
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
 
     // 주문 조회
     public List<OrderItemDTO> readOrder(String email) {
