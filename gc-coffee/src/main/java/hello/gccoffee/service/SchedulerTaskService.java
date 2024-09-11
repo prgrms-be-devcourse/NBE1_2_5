@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SchedulerTaskService {
     private final OrderRepository orderRepository;
 
-//    @Scheduled(cron = "0 0 14 * * *") // 매일 14시에 실행되는 스케쥴러
-    @Scheduled(cron = "0 * * * * *") // 1분 마다 실행되는 스케줄러. 테스트용
+//    @Scheduled(cron = "0 * * * * *") // 1분 마다 실행되는 스케줄러. 테스트용
+    @Scheduled(cron = "0 0 14 * * *") // 매일 14시에 실행되는 스케쥴러
     public void updateOrderStatus() {
         int acceptedOrder = orderRepository.countOrderByAccepted(); // 배송되지 않은 주문 수
 
