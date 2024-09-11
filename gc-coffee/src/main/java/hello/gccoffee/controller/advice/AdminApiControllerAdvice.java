@@ -48,7 +48,6 @@ public class AdminApiControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 
-
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, String>> handleProductTaskException(MethodArgumentTypeMismatchException e) {
         Map<String, String> map = new HashMap<>();
