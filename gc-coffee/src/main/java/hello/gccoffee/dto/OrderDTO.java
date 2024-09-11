@@ -10,11 +10,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Log4j2
 public class OrderDTO {
 
     @Email
@@ -28,7 +30,7 @@ public class OrderDTO {
 
     private OrderEnum orderEnum;
 
-    private int orderId;
+    private Integer orderId;
 
     public OrderDTO(Order order) {
         email = order.getEmail();
@@ -40,7 +42,6 @@ public class OrderDTO {
 
     public Order toEntity() {
         return Order.builder()
-                .orderId(orderId)
                 .email(email)
                 .address(address)
                 .postcode(postcode)

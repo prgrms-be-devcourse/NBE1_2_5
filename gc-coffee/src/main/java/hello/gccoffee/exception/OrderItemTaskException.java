@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class OrderTaskException extends RuntimeException {
+public class OrderItemTaskException extends RuntimeException {
     private String message;
     private int code;
 }
