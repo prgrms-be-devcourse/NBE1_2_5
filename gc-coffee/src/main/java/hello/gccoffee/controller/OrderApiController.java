@@ -189,5 +189,19 @@ public class OrderApiController {
             throw OrderException.INVALID_EMAIL.get();
         }
     }
+
+
+
+    @PutMapping("/orderItems/{orderItemId}")
+    public ResponseEntity<OrderItemDTO> updateSingleOrderItem(@PathVariable("orderItemId") Integer orderItemId,
+                                                              @RequestBody @Validated OrderItemDTO orderItemDTO) {
+        if (orderItemId == null) {
+            throw OrderException.MISSING_ORDER_ITEM_ID.get();
+        }
+        orderItemDTO.setOrderItemId(orderItemId);
+
+        OrderItemDTO updatedOrderItem = orderMainService.updateOrderItemInOrder(orderItemDTO);
+        return ResponseEntity.ok(updatedOrderItem);
+    }
 }
 

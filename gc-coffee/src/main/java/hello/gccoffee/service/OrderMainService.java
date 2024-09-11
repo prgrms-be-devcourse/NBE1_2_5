@@ -64,4 +64,10 @@ public class OrderMainService {
         return orderItemService.modify(orderItemDTO, order, orderItemId);
     }
 
+    // 주문 조회 창에서 개별 주문 수정
+    public OrderItemDTO updateOrderItemInOrder(OrderItemDTO orderItemDTO) {
+        // 해당 주문 번호와 내용을 orderItemService에 넘겨서 수정
+        // 트랜잭션 완료 시 Order 객체의 orderList에도 자동으로 반영
+        return orderItemService.updateOrderItem(orderItemDTO);
+    }
 }

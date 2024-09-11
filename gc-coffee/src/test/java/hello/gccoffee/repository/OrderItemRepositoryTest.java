@@ -4,6 +4,7 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
 import lombok.extern.log4j.Log4j2;
+import hello.gccoffee.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,6 +13,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static hello.gccoffee.entity.Category.COFFEE_BEAN_PACKAGE;
 
@@ -24,6 +29,7 @@ public class OrderItemRepositoryTest {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private ProductRepository productRepository;
+    private OrderRepository orderRepository;
 
     @Test
     @Transactional
@@ -47,11 +53,28 @@ public class OrderItemRepositoryTest {
         Product productId = productRepository.findByProductName(productName);
         log.info(productId);
     }
+
     @Test
     public void jPQLOrderItemTest2(){
         Product product = Product.builder().productId(1)
                         .productName("아메리카노").category(COFFEE_BEAN_PACKAGE)
                         .price(2000).description("맛있는커피").build();
         log.info(orderItemRepository.findProductIdByOrderItemId(product, 1, 1111));
+    }
+
+    @Test
+    public void testOrderSave() {
+        IntStream.range(1, 11).forEach(i -> {
+            Order order = Order.builder()
+                    .email(i + "@aaa.com")
+                    .address("서울시")
+                    .postcode("11111")
+                    .orderEnum(OrderEnum.ORDER_ACCEPTED)
+                    .build();
+            Order savedOrder = orderRepository.save(order);
+
+            assertNotNull(savedOrder);
+            assertEquals(i + "@aaa.com", savedOrder.getEmail());
+        });
     }
 }

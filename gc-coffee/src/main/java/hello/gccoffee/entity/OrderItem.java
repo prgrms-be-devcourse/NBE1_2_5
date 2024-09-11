@@ -32,7 +32,7 @@ public class OrderItem {
 
     private Integer price;
 
-    private int quantity;
+    private Integer quantity;
 
     public void changeCategory(Category category) {
         this.category = category;
@@ -52,5 +52,9 @@ public class OrderItem {
 
     public void changeOrder(Order order) {
         this.order = order;
+    }
+
+    public void changeQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

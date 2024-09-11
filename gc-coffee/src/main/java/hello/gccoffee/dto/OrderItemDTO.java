@@ -20,7 +20,10 @@ public class OrderItemDTO {
 
     // description 필요 시 추가
 //    private int productId;
-//    private int orderId;
+
+    private Integer orderId;
+
+    private Integer orderItemId;
 
     @NotBlank(message = "이메일을 입력해주세요")
     @Email
@@ -50,6 +53,8 @@ public class OrderItemDTO {
     private Category category;
 
     public OrderItemDTO(OrderItem orderItem) {
+        orderId = orderItem.getOrderItemId();
+        orderItemId = orderItem.getOrderItemId();
         email = orderItem.getOrder().getEmail();
         address = orderItem.getOrder().getAddress();
         postcode = orderItem.getOrder().getPostcode();
