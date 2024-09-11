@@ -14,5 +14,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findByEmail(String email);
 
     List<Order> findAllByEmail(String email);
+
     void deleteByEmail(String email);
 }
