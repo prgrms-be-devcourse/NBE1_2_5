@@ -55,7 +55,7 @@ public class OrderMainService {
     public void removeOrder(String email, int orderId, int orderItemId) {
         log.info("OrderMainService ===> removeOrder() ");
         Order order = orderService.getOrders(email, orderId, orderItemId);
-        orderItemService.deleteoneItem(email, orderId, orderItemId);
+        orderItemService.deleteoneTem(email, orderId, orderItemId);
     }
 
     // 관리자 주문 수정

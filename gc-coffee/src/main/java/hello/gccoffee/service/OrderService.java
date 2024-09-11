@@ -93,10 +93,6 @@ public class OrderService {
         return orderRepository.findOrderIdByEmail(email);
     }
 
-    public List<Order> findAllByEmail(String email) {
-        List<Order> foundOrders = orderRepository.findAllByEmail(email);
-        return foundOrders;
-    }
 
     // 이메일 주문자번호 주문번호로 찾기
     public Order getOrders(String email, int orderId, int orderItemId) {

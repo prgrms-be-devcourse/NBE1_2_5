@@ -152,7 +152,7 @@ public class OrderItemService {
         orderItemRepository.deleteByOrderOrderId(orderId);
     }
 
-    public void deleteoneItem(String email, int orderId, int orderItemId) {
+    public void deleteoneTem(String email, int orderId, int orderItemId) {
         orderItemRepository.deleteByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId);
     }
 }
