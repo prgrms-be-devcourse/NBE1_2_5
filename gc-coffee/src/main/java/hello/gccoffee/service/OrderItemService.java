@@ -5,6 +5,7 @@ package hello.gccoffee.service;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderEnum;
 import hello.gccoffee.entity.Product;
+import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.ProductRepository;
 
 import hello.gccoffee.dto.OrderItemDTO;
@@ -41,10 +42,12 @@ public class OrderItemService {
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER_ID::get);
         log.info("orderItemList: " + orderItemList);
 
+
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
         if (orderItemList == null) {
             return orderItemDTOS;
         }
+
         orderItemList.forEach(orderItem -> {
             orderItemDTOS.add(OrderItemDTO.builder()
                     .email(orderItem.getOrder().getEmail())
@@ -58,6 +61,7 @@ public class OrderItemService {
         });
         return orderItemDTOS;
     }
+
     //관리자 주문 수정
     public OrderItemDTO modify(OrderItemDTO orderItemDTO, List<Order> order, int orderItemId) {
         // 1개의 order 찾기
@@ -85,31 +89,70 @@ public class OrderItemService {
     }
 
     public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
+        if (!order.getOrderItems().isEmpty()) {
+            throw OrderException.ORDER_LIST_EXIST.get();
+        }
 
-            try {
-                List<OrderItem> orderItemList = new ArrayList<>();
-                for (OrderItemDTO item : items) {
-                //문제1 productName을 productId로 변환하기 위해 productRepository에 의존하는 게 맞는가?
-                String productName = item.getProductName();
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for (OrderItemDTO item : items) {
+            //문제1 productName을 productId로 변환하기 위해 productRepository에 의존하는 게 맞는가?
+            String productName = item.getProductName();
 
-                Product product = productRepository.findByProductName(productName);
-                //상품 확인 절차
-                if (product == null) throw OrderException.BAD_RESOURCE.get();
-                if(product.getPrice()!=item.getPrice())throw OrderException.BAD_RESOURCE.get();
-                int productId = product.getProductId();
+            Product product = productRepository.findByProductName(productName);
+            //상품 확인 절차
+            if (product == null) throw OrderException.BAD_RESOURCE.get();
+            if (product.getPrice() != item.getPrice()) throw OrderException.BAD_RESOURCE.get();
+            int productId = product.getProductId();
 
-                OrderItem orderItem = item.toEntity(productId, order.getOrderId());
-                //회원정보 확인 절차
-                if(!orderItem.getOrder().getEmail().equals(order.getEmail()))throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
-                if(!orderItem.getOrder().getPostcode().equals(order.getPostcode()))throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
-                if(!orderItem.getOrder().getAddress().equals(order.getAddress()))throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
-                //가격
-                orderItemRepository.save(orderItem);
-                order.addOrderItems(orderItem);
-                }
-                order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
-                return orderItemList;
-
+            OrderItem orderItem = item.toEntity(productId, order.getOrderId());
+            //회원정보 확인 절차
+            if (!orderItem.getOrder().getEmail().equals(order.getEmail()))
+                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+            if (!orderItem.getOrder().getPostcode().equals(order.getPostcode()))
+                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+            if (!orderItem.getOrder().getAddress().equals(order.getAddress()))
+                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+            //가격
+            orderItemRepository.save(orderItem);
+            order.addOrderItems(orderItem);
+        }
+        order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
+        return orderItemList;
     }
 
-}
+    public boolean deleteAllByOrderId(int orderId) {
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
+        try {
+            for (OrderItem orderItem : orderItemList) {
+                orderItemRepository.delete(orderItem);
+            }
+            return true;
+        }catch (OrderTaskException e){
+            return false;
+        }catch (Exception e) {
+            return orderItemList.isEmpty();
+        }
+    }
+
+    public Integer deleteOneItem(OrderItemDTO orderItemDTO, int orderId) {
+        try {
+            Product product = productRepository.findByProductName(orderItemDTO.getProductName());
+
+            int deletedCount = orderItemRepository.deleteByProductNameAndCategoryAndPrice(
+                    product.getPrice(),
+                    orderItemDTO.getCategory(),
+                    orderItemDTO.getProductName()
+            );
+
+            if (deletedCount == 0) {
+                throw OrderException.NOT_DELETE_ITEM.get();
+            }
+
+            return product.getProductId();
+        } catch (OrderTaskException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+ }
