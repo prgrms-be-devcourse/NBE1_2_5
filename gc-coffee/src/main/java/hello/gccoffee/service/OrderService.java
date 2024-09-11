@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,4 +93,18 @@ public class OrderService {
         return orderRepository.findOrderIdByEmail(email);
     }
 
+    public List<Order> findAllByEmail(String email) {
+        List<Order> foundOrders = orderRepository.findAllByEmail(email);
+        return foundOrders;
+    }
+
+    // 이메일 주문자번호 주문번호로 찾기
+    public Order getOrders(String email, int orderId, int orderItemId) {
+        return orderRepository.findByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with given email, orderId, and orderItemId."));
+    }
+
+    public void deleteOrder(String email) {
+        orderRepository.deleteByEmail(email);
+    }
 }

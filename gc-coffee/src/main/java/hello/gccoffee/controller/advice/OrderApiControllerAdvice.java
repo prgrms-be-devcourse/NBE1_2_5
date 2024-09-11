@@ -2,6 +2,7 @@ package hello.gccoffee.controller.advice;
 
 import hello.gccoffee.exception.OrderTaskException;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,4 +30,12 @@ public class OrderApiControllerAdvice {
         return ResponseEntity.status(400).body(error);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "error", "Invalid argument",
+                        "message", e.getMessage()
+                ));
+    }
 }
