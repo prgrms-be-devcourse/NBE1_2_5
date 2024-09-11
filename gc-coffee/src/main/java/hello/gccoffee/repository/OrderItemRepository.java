@@ -1,5 +1,6 @@
 package hello.gccoffee.repository;
 
+import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
@@ -30,4 +31,5 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer>{
     @Transactional
     @Query("DELETE FROM OrderItem oi WHERE oi.order.email = :email AND oi.order.orderId = :orderId AND oi.orderItemId = :orderItemId")
     void deleteByEmailAndOrderIdAndOrderItemId(@Param("email") String email, @Param("orderId") int orderId, @Param("orderItemId") int orderItemId);
+
 }

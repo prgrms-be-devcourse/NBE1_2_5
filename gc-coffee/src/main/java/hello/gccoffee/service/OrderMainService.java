@@ -2,6 +2,8 @@ package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.dto.OrderItemDTO;
+import hello.gccoffee.repository.OrderItemRepository;
+import hello.gccoffee.repository.OrderRepository;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.repository.OrderItemRepository;
 import hello.gccoffee.repository.OrderRepository;
@@ -24,6 +26,7 @@ public class OrderMainService {
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     // 주문 조회
     public List<OrderItemDTO> readOrder(String email) {
@@ -33,6 +36,14 @@ public class OrderMainService {
         log.info("orderMainservice ===> findByEmail() : " + orderDTO);
 
         return orderItemService.getAllItems(orderDTO.getOrderId());
+    }
+
+
+    //주문 목록 조회
+    public List<OrderItemDTO> getList() {
+        log.info("OrderMainService ===> getList() ");
+        return orderItemService.getAllOrders();
+
     }
 
     // 주문 주문자 전체 삭제

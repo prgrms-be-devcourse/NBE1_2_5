@@ -13,6 +13,7 @@ import hello.gccoffee.repository.OrderRepository;
 import hello.gccoffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,26 @@ public class OrderItemService {
         if (orderItemList == null) {
             return orderItemDTOS;
         }
+
+        orderItemList.forEach(orderItem -> {
+            orderItemDTOS.add(OrderItemDTO.builder()
+                    .email(orderItem.getOrder().getEmail())
+                    .address(orderItem.getOrder().getAddress())
+                    .postcode(orderItem.getOrder().getPostcode())
+                    .productName(orderItem.getProduct().getProductName())
+                    .price(orderItem.getPrice())
+                    .quantity(orderItem.getQuantity())
+                    .category(orderItem.getCategory())
+                    .build());
+        });
+        return orderItemDTOS;
+    }
+
+    //모든 주문 목록 조회
+    public List<OrderItemDTO> getAllOrders() {
+        log.info("OrderItemService ===> getAllOrders() ");
+        List<OrderItem> orderItemList = orderItemRepository.findAll();
+        List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
 
         orderItemList.forEach(orderItem -> {
             orderItemDTOS.add(OrderItemDTO.builder()
@@ -146,7 +167,7 @@ public class OrderItemService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }            
+    }
 
     public void deleteAllItems(int orderId) {
         orderItemRepository.deleteByOrderOrderId(orderId);
@@ -178,6 +199,7 @@ public class OrderItemService {
         } catch (OrderTaskException e) {
             throw OrderException.ORDER_ITEM_NOT_UPDATED.get();
         }
-    }
+
+}
 }
 
