@@ -1,19 +1,13 @@
 package hello.gccoffee.service;
 
 
-
-import hello.gccoffee.entity.Order;
-import hello.gccoffee.entity.OrderEnum;
-import hello.gccoffee.entity.Product;
-import hello.gccoffee.exception.OrderTaskException;
-import hello.gccoffee.repository.ProductRepository;
-
 import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.Order;
+import hello.gccoffee.entity.OrderEnum;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
 import hello.gccoffee.exception.OrderException;
-import hello.gccoffee.exception.ProductException;
+import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.OrderItemRepository;
 import hello.gccoffee.repository.OrderRepository;
 import hello.gccoffee.repository.ProductRepository;
@@ -24,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
