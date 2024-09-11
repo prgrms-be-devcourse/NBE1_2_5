@@ -11,7 +11,6 @@ import hello.gccoffee.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -43,10 +42,6 @@ public class OrderApiController {
         if (!email.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$")) {
             throw OrderException.INVALID_EMAIL.get();
         }
-
-        log.info("APIController ===> orderItemsDTOS 호출");
-        List<OrderItemDTO> orderItemDTOS = orderMainService.readOrder(email);
-        log.info("APIController ===> orderMainService에서 orderItemDTOs 반환 : " + orderItemDTOS);
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
 
@@ -71,12 +66,7 @@ public class OrderApiController {
         }
         Order findOrder = orderService.findById(orderId);
 
-
         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
-                if (orderItemList == null) {
-                    //필요한 부분인지 검증 필요,아이템의 order 정보가 findOrder 와 다를 때
-                    throw OrderException.WRONG_ORDER_ITEM_LIST.get();
-                }
 
         return ResponseEntity.ok(findOrder);
     }

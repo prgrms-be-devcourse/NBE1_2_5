@@ -10,6 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,9 +24,12 @@ public class OrderService {
         Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
         return new OrderDTO(foundOrder);
     }
+    //Email 엔티티 받기
+    public List<Order> findEntityByEmail(String email) {
+        return orderRepository.findByEmails(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+    }
 
     public Order addOrders(OrderDTO orderDTO) {
-        //추가과정1. 같은 이메일로 등록시 어떻게 처리할것인지?
         try {
             Order order = orderDTO.toEntity();
             orderRepository.save(order);
