@@ -43,10 +43,6 @@ public class OrderApiController {
         if (!email.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$")) {
             throw OrderException.INVALID_EMAIL.get();
         }
-
-        log.info("APIController ===> orderItemsDTOS 호출");
-        List<OrderItemDTO> orderItemDTOS = orderMainService.readOrder(email);
-        log.info("APIController ===> orderMainService에서 orderItemDTOs 반환 : " + orderItemDTOS);
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
 
