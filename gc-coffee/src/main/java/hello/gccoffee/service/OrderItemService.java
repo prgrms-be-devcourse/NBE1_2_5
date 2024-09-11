@@ -28,7 +28,6 @@ public class OrderItemService {
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.NOT_FOUND_ORDERID::get);
         log.info("orderItemList: " + orderItemList);
 
-
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
         if (orderItemList == null) {
             return orderItemDTOS;
@@ -47,5 +46,4 @@ public class OrderItemService {
         });
         return orderItemDTOS;
     }
-
 }

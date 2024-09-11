@@ -24,7 +24,6 @@ public class OrderMainService {
         OrderDTO orderDTO = orderService.findByEmail(email);
         log.info("orderMainservice ===> findByEmail() : " + orderDTO);
 
-        log.info("orderMainservice ===> getAllItems " + orderItemService.getAllItems(orderDTO.getOrderId()));
         return orderItemService.getAllItems(orderDTO.getOrderId());
     }
 }
