@@ -1,7 +1,9 @@
 package hello.gccoffee.controller;
 
+import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.dto.ProductDTO;
 import hello.gccoffee.exception.ProductTaskException;
+import hello.gccoffee.service.OrderMainService;
 import hello.gccoffee.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +20,7 @@ import java.util.Map;
 @RequestMapping("/api/products")
 public class AdminApiController {
     private final ProductService productService;
+    private final OrderMainService orderMainService;
 
     @PostMapping
     public ResponseEntity<ProductDTO> registerProduct(@Validated @RequestBody ProductDTO productDTO) {
@@ -83,5 +86,13 @@ public class AdminApiController {
                     "message", "An unexpected error occurred"
             ));
         }
+    }
+    @PutMapping
+    public ResponseEntity<OrderItemDTO> update(@Validated
+                                               @RequestBody OrderItemDTO orderItemDTO,
+                                               @RequestParam int orderItemId) {
+
+        OrderItemDTO orderItemDTOS = orderMainService.modifyOrder(orderItemDTO, orderItemId);
+        return ResponseEntity.ok(orderItemDTOS);
     }
 }
