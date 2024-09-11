@@ -70,90 +70,16 @@ public class OrderApiController {
         return ResponseEntity.ok(findOrder);
     }
 
-    //임시 조회
-    @GetMapping("/get")
-    public ResponseEntity<List<Order>> getOrdersByEmail(@RequestParam String email) {
-        log.info(email);
-        List<Order> allByEmail = orderService.findAllByEmail(email);
-        return ResponseEntity.ok(allByEmail);
-    }
-
-    //이메일에 해당하는 단일 주문 삭제
-    @DeleteMapping("/{orderId}")
-    public ResponseEntity<Map<String, String>> deleteOneOrder(@PathVariable int orderId, @RequestParam String email) {
-        //확인절차
-        List<Integer> orderIdsByEmail = orderService.findOrderIdsByEmail(email);
-        Map<String, String> map;
-        if (orderIdsByEmail.contains(orderId)) {
-            //삭제로직
-            try {
-                orderItemService.deleteAllByOrderId(orderId);
-                orderService.deleteOneOrderOfOne(orderId);
-            } catch (OrderTaskException e) {
-                //실패반환
-                map = Map.of("message", "delete fail");
-                return ResponseEntity.ok(map);
-            }
-
-            //성공반환
-            map = Map.of("message", "delete complete");
-            return ResponseEntity.ok(map);
-        }
-        //주문번호가 해당 이메일이 아니면 실패 반환
-        map = Map.of("message", "order not exist");
-        return ResponseEntity.ok(map);
-
-    }
-    //이메일에 해당하는 모든 주문 삭제
-    @DeleteMapping
-    public ResponseEntity<Map<String, String>> deleteAllOrder(@RequestParam String email) {
-
-        Map<String, String> map;
-
-        try {
-            List<Integer> orderIdsByEmail = orderService.findOrderIdsByEmail(email);
-            for (Integer orderId : orderIdsByEmail) {
-                orderItemService.deleteAllByOrderId(orderId);
-            }
-            orderService.deleteAllOrderOfOne(email);
-            map = Map.of("message", "delete complete");
-            return ResponseEntity.ok(map);
-        } catch (OrderTaskException e) {
-            map = Map.of("message", "delete fail");
-            return ResponseEntity.ok(map);
-        }
-
-    }
-    //단일 아이템 삭제
-    @PostMapping("/delete/{orderId}")
-    public ResponseEntity<Map<String, String>> deleteOneItemInOrder
-    (@PathVariable int orderId, @RequestParam String email, @Validated @RequestBody OrderItemDTO orderItemDTO) {
-        //확인절차
-        List<Integer> orderIdsByEmail = orderService.findOrderIdsByEmail(email);
-        Map<String, String> map;
-        if (orderIdsByEmail.contains(orderId)) {
-            //삭제로직
-            try {
-                Integer productId = orderItemService.deleteOneItem(orderItemDTO, orderId);
-                orderService.deleteOneItemInOrder(orderItemDTO, productId, orderId);
-            } catch (OrderTaskException e) {
-                //실패반환
-                map = Map.of("message", "delete fail");
-                return ResponseEntity.ok(map);
-            }
-
-            //성공반환
-            map = Map.of("message", "delete complete");
-            return ResponseEntity.ok(map);
-        }
-        //주문번호가 해당 이메일이 아니면 실패 반환
-        map = Map.of("message", "order not exist");
-        return ResponseEntity.ok(map);
-
-    }
+//    //임시 조회
+//    @GetMapping("/get")
+//    public ResponseEntity<List<Order>> getOrdersByEmail(@RequestParam String email) {
+//        log.info(email);
+//        List<Order> allByEmail = orderService.findAllByEmail(email);
+//        return ResponseEntity.ok(allByEmail);
+//    }
 
 
-    // 주문, 주문자 전체 삭제
+////     주문, 주문자 전체 삭제
 //    @DeleteMapping
 //    public ResponseEntity<Map<String, String>> delete(@RequestParam("email") String email) {
 //        checkEmail(email);

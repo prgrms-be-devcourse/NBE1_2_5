@@ -46,6 +46,7 @@ public class ProductService {
             product.changePrice(productDTO.getPrice());
             product.changeCategory(productDTO.getCategory());
             product.changeDescription(productDTO.getDescription());
+            product.changeProductName(productDTO.getProductName());
             productRepository.save(product);
 
             return new ProductDTO(product);

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,7 @@ public class OrderItemRepositoryTest {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
     private OrderRepository orderRepository;
 
     @Test
@@ -75,6 +77,25 @@ public class OrderItemRepositoryTest {
 
             assertNotNull(savedOrder);
             assertEquals(i + "@aaa.com", savedOrder.getEmail());
+        });
+    }
+
+    @Test
+    public void testOrderItemSave() {
+        IntStream.range(1, 2).forEach(i -> {
+            Optional<Order> order = orderRepository.findById(2);
+            Optional<Product> product = productRepository.findById(3);
+            OrderItem orderItem = OrderItem.builder()
+                    .order(order.get())
+                    .product(product.get())
+                    .category(product.get().getCategory())
+                    .price(product.get().getPrice())
+                    .quantity(14)
+                    .build();
+
+            orderItemRepository.save(orderItem);
+
+            assertNotNull(orderItem);
         });
     }
 }

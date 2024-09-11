@@ -78,8 +78,10 @@ public class OrderItemService {
     //관리자 주문 수정
     public OrderItemDTO modify(OrderItemDTO orderItemDTO, List<Order> order, int orderItemId) {
         // 1개의 order 찾기
-        List<Order> collectOrderItemId = order.stream().filter(i -> i.getOrderId() == orderItemId).toList();
-        Order foundOrder = collectOrderItemId.get(0);
+//        List<Order> collectOrderItemId = order.stream().filter(i -> i.getOrderId() == orderItemId).toList();
+//        Order foundOrder = collectOrderItemId.get(0);
+
+        Order foundOrder = order.stream().filter(i -> i.getOrderId() == orderItemId).findAny().orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
 
         //수정할 주문상세 페이지 찾기
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(foundOrder.getOrderId())
