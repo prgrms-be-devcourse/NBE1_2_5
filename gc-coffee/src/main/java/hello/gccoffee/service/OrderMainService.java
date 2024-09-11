@@ -35,7 +35,7 @@ public class OrderMainService {
     }
     // 관리자 주문 수정
     public OrderItemDTO modifyOrder(OrderItemDTO orderItemDTO, int orderItemId) {
-        Order order = orderService.findEntityByEmail(orderItemDTO.getEmail());
+        List<Order> order = orderService.findEntityByEmail(orderItemDTO.getEmail());
         return orderItemService.modify(orderItemDTO, order, orderItemId);
     }
 

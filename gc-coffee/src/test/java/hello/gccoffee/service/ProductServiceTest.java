@@ -51,6 +51,31 @@ public class ProductServiceTest {
         // Then
         assertFalse(productRepository.findById(productId).isPresent(), "Product should not be present");
     }
+    @Test
+    public void testRemoveProductSuccessfully2() {
+        // Given
+        int productId = 8;
+        ProductDTO productDTO = ProductDTO.builder()
+                .productId(productId)
+                .productName("Test Product")
+                .category(Category.COFFEE_BEAN_PACKAGE) // 예시 카테고리
+                .price(5000)
+                .description("This is a test product")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
+        // ProductDTO를 엔티티로 변환하여 저장
+        Product product = productDTO.toEntity();
+        productRepository.save(product);
+        // 다른 필드들도 적절히 설정
+        productRepository.save(product); // DB에 제품 저장
+
+        // When
+        productService.remove(productId);
+
+        // Then
+        assertFalse(productRepository.findById(productId).isPresent(), "Product should not be present");
+    }
 
 }
