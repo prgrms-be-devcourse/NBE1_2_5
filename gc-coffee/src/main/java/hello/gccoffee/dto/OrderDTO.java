@@ -28,7 +28,7 @@ public class OrderDTO {
 
     private OrderEnum orderEnum;
 
-    private int orderId;
+    private Integer orderId;
 
     public OrderDTO(Order order) {
         email = order.getEmail();

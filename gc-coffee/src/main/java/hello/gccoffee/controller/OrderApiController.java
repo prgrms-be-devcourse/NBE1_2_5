@@ -71,12 +71,7 @@ public class OrderApiController {
         }
         Order findOrder = orderService.findById(orderId);
 
-
         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
-                if (orderItemList == null) {
-                    //필요한 부분인지 검증 필요,아이템의 order 정보가 findOrder 와 다를 때
-                    throw OrderException.WRONG_ORDER_ITEM_LIST.get();
-                }
 
         return ResponseEntity.ok(findOrder);
     }

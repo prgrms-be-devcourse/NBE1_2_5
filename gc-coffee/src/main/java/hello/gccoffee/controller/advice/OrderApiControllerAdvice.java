@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @Log4j2
-public class ExceptionAdvice {
+public class OrderApiControllerAdvice {
 
     @ExceptionHandler(OrderTaskException.class)
     public ResponseEntity<Map<String, String>> handleException(OrderTaskException e) {
@@ -19,5 +20,14 @@ public class ExceptionAdvice {
         Map<String, String> errMap = Map.of("error", e.getMessage());
         return ResponseEntity.status(e.getCode()).body(errMap);
     }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Map<String, String>> handleNoSuchElement(NoSuchElementException e) {
+        log.info("NoSuchException error ",e);
+
+        Map<String, String> error = Map.of("error", e.getMessage());
+        return ResponseEntity.status(400).body(error);
+    }
+
 
 }
