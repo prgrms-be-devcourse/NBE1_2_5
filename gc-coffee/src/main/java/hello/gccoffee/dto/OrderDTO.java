@@ -13,6 +13,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,12 +42,18 @@ public class OrderDTO {
     @Schema(description = "주문 번호")
     private Integer orderId;
 
+    @Schema(description = "주문에 포함된 상품 목록")
+    private List<OrderItemDTO> orderItems;
+
     public OrderDTO(Order order) {
         email = order.getEmail();
         postcode = order.getPostcode();
         address = order.getAddress();
         orderEnum = order.getOrderEnum();
         orderId = order.getOrderId();
+        orderItems = order.getOrderItems().stream()
+                .map(OrderItemDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Order toEntity() {
