@@ -22,17 +22,17 @@ public class ProductService {
 
     public ProductDTO register(ProductDTO productDTO) {
         Product product = productDTO.toEntity();
+
         try {
             productRepository.save(product);
             return new ProductDTO(product);
         } catch (ProductTaskException e) {
-            log.error("---" + e.getMessage());
             throw ProductException.PRODUCT_NOT_REGISTERED.get();
         }
     }
 
-    public ProductDTO read(int pno) {     //상품 조회
-        Product product = productRepository.findById(pno).orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
+    public ProductDTO read(Integer productId) {     //상품 조회
+        Product product = productRepository.findById(productId).orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
         return new ProductDTO(product);
     }
 
@@ -41,28 +41,25 @@ public class ProductService {
         Optional<Product> foundProduct = productRepository.findById(productDTO.getProductId());
         Product product = foundProduct.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
 
-        log.info(product.toString());
         try {
             product.changePrice(productDTO.getPrice());
             product.changeCategory(productDTO.getCategory());
             product.changeDescription(productDTO.getDescription());
             product.changeProductName(productDTO.getProductName());
             productRepository.save(product);
-
             return new ProductDTO(product);
         } catch (Exception e) {
             throw ProductException.PRODUCT_NOT_UPDATED.get();
         }
     }
 
-    public void remove(int pno) {
-        Optional<Product> foundProduct = productRepository.findById(pno);
+    public void remove(Integer productId) {
+        Optional<Product> foundProduct = productRepository.findById(productId);
         Product product = foundProduct.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
 
         try {
             productRepository.delete(product);
         } catch(Exception e) {
-            log.error("--- " + e.getMessage());
             throw ProductException.PRODUCT_NOT_REMOVED.get();
         }
     }

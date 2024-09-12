@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 @Transactional
 public class SchedulerTaskService {
+
     private final OrderRepository orderRepository;
 
 //    @Scheduled(cron = "0 * * * * *") // 1분 마다 실행되는 스케줄러. 테스트용

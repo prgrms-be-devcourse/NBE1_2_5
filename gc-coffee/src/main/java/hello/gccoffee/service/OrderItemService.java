@@ -24,13 +24,13 @@ import java.util.List;
 @Transactional
 @Log4j2
 public class OrderItemService {
+
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository; //문제점1
 
     // orderId(혹은 order)에 해당하는 상품들 조회
-    public List<OrderItemDTO> getAllItems(int orderId) {
-
+    public List<OrderItemDTO> getAllItems(Integer orderId) {
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ID_NOT_FOUND::get);
         log.info("orderItemList: " + orderItemList);
 
@@ -75,7 +75,7 @@ public class OrderItemService {
     }
 
     //관리자 주문 수정
-    public OrderItemDTO modify(OrderItemDTO orderItemDTO, int orderItemId) {
+    public OrderItemDTO modify(OrderItemDTO orderItemDTO, Integer orderItemId) {
 
         //수정할 OrderItem 찾기
         OrderItem foundOrderItem = orderItemRepository.findById(orderItemId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
@@ -105,7 +105,7 @@ public class OrderItemService {
             //상품 확인 절차
             if (product == null) throw OrderException.INVALID_RESOURCE.get();
             if (product.getPrice() != item.getPrice()) throw OrderException.INVALID_RESOURCE.get();
-            int productId = product.getProductId();
+            Integer productId = product.getProductId();
 
             OrderItem orderItem = item.toEntity(productId, order.getOrderId());
             //회원정보 확인 절차
@@ -122,7 +122,7 @@ public class OrderItemService {
         return orderItemList;
     }
 
-    public boolean deleteAllByOrderId(int orderId) {
+    public boolean deleteAllByOrderId(Integer orderId) {
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
         try {
             for (OrderItem orderItem : orderItemList) {
@@ -136,7 +136,7 @@ public class OrderItemService {
         }
     }
 
-    public Integer deleteOneItem(OrderItemDTO orderItemDTO, int orderId) {
+    public Integer deleteOneItem(OrderItemDTO orderItemDTO, Integer orderId) {
         try {
             Product product = productRepository.findByProductName(orderItemDTO.getProductName());
 
@@ -158,11 +158,11 @@ public class OrderItemService {
         }
     }
 
-    public void deleteAllItems(int orderId) {
+    public void deleteAllItems(Integer orderId) {
         orderItemRepository.deleteByOrderOrderId(orderId);
     }
 
-    public void deleteoneTem(String email, int orderId, int orderItemId) {
+    public void deleteoneTem(String email, Integer orderId, Integer orderItemId) {
         orderItemRepository.deleteByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId);
     }
 
