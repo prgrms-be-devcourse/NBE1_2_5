@@ -22,10 +22,11 @@ public class SwaggerConfig {
                 .version("1.0.0");
     }
 
+    // 예외 응답 작업 중!!
 //    @Bean
 //    public OperationCustomizer customizer() {
 //        return (Operation operation, HandlerMethod handlerMethod) -> {
-//            ApiErrorCode apiErrorCode = handlerMethod.getMethodAnnotation(ApiErrorCode.class);
+//            orderApiErrorCode apiErrorCode = handlerMethod.getMethodAnnotation(orderApiErrorCode.class);
 //
 //            if (apiErrorCode != null) { // @ApiErrorCode가 붙어있는 경우
 //                generateErrorCodeResponse(operation, apiErrorCode.orderValue());
@@ -34,7 +35,21 @@ public class SwaggerConfig {
 //        };
 //    }
 //
-//    private void generateErrorCodeResponse(Operation operation, OrderException[] orderExceptions) {
+//    // ResponseCode는 SuccessCode와 ErrorCode의 인터페이스입니다.
+//    private void generateResponseCodeResponseExample(Operation operation, OrderException[] orderExceptionResponse) {
+//        ApiResponses responses = operation.getResponses();
 //
+//        // 에러 응답값 객체를 만들어 에러 코드별로 그룹화
+//        Map<Integer, List<ExampleHolder>> statusWithExampleHolders = Arrays.stream(responseCodes)
+//                .map(
+//                        responseCode -> ExampleHolder.builder()
+//                                .holder(getSwaggerExample(responseCode))
+//                                .httpStatus(responseCode.getHttpStatus().value())
+//                                .name(responseCode.name())
+//                                .build()
+//                )
+//                .collect(Collectors.groupingBy(ExampleHolder::getHttpStatus));
+//
+//        addExamplesToResponses(responses, statusWithExampleHolders);
 //    }
 }
