@@ -36,12 +36,15 @@ public class OrderApiController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> addOrder(@Validated @RequestBody OrderDTO orderDTO,
+    public ResponseEntity<Map<String, Object>> addOrder(@Validated @RequestBody OrderDTO orderDTO,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw OrderException.INVALID_RESOURCE.get();
         }
-        return ResponseEntity.ok(orderMainService.addOrders(orderDTO));
+        return ResponseEntity.ok(Map.of(
+                "order", orderMainService.addOrders(orderDTO),
+                "message", "당일 오후 2시 이후의 주문은 다음날 배송을 시작합니다."
+        ));
     }
 
     // 수정 필요!
