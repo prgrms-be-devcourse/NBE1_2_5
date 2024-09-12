@@ -59,13 +59,18 @@ public class AdminApiController {
     // 관리자 주문 내역 수정
     @PutMapping("/orders/{orderItemId}")
     public ResponseEntity<OrderItemDTO> updateOrderItem(@Validated @RequestBody OrderItemDTO orderItemDTO,
-                                                        @PathVariable Integer orderItemId) {
+                                                        @PathVariable Integer orderItemId,
+                                                        @RequestParam("adminPassword") String adminPassword) {
+        validateAdminPassword(adminPassword);
         return ResponseEntity.ok(orderMainService.updateOrderItem(orderItemDTO, orderItemId));
     }
 
     // 이메일에 해당하는 단일 주문 삭제
     @DeleteMapping("/orders/{orderId}")
-    public ResponseEntity<Map<String, String>> deleteOneOrder(@PathVariable Integer orderId, @RequestParam String email) {
+    public ResponseEntity<Map<String, String>> deleteOneOrder(@PathVariable Integer orderId,
+                                                              @RequestParam String email,
+                                                              @RequestParam("adminPassword") String adminPassword) {
+        validateAdminPassword(adminPassword);
         orderMainService.removeOrder(orderId, email);
         return ResponseEntity.ok(Map.of(
                 "result", "success",
@@ -75,12 +80,23 @@ public class AdminApiController {
 
     // 이메일에 해당하는 모든 주문 삭제
     @DeleteMapping("/orders")
-    public ResponseEntity<Map<String, String>> deleteAllOrder(@RequestParam String email) {
+    public ResponseEntity<Map<String, String>> deleteAllOrder(@RequestParam String email,
+                                                              @RequestParam("adminPassword") String adminPassword) {
+        validateAdminPassword(adminPassword);
         List<Integer> idList = orderMainService.removeAllOrder(email);
         return ResponseEntity.ok(Map.of(
                 "result", "success",
                 "message", "Order has been deleted successfully. Deleted ID: " + idList.toString()
         ));
+    }
+
+    private void validateAdminPassword(String adminPassword) {
+        if (adminPassword == null || adminPassword.isEmpty()) {
+            throw new AdminAuthenticationException("Admin password is required");
+        }
+        if (!"1111".equals(adminPassword)) {
+            throw new AdminAuthenticationException("Unauthorized");
+        }
     }
 
     // 수정 필요!
@@ -110,13 +126,4 @@ public class AdminApiController {
 //        map = Map.of("message", "order not exist");
 //        return ResponseEntity.ok(map);
 //    }
-
-    private void validateAdminPassword(String adminPassword) {
-        if (adminPassword == null || adminPassword.isEmpty()) {
-            throw new AdminAuthenticationException("Admin password is required");
-        }
-        if (!"1111".equals(adminPassword)) {
-            throw new AdminAuthenticationException("Unauthorized");
-        }
-    }
 }

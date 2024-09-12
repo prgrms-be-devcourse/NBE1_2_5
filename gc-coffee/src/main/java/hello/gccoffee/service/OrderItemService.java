@@ -60,17 +60,15 @@ public class OrderItemService {
         List<OrderItem> orderItemList = orderItemRepository.findAll();
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
 
-        orderItemList.forEach(orderItem -> {
-            orderItemDTOS.add(OrderItemDTO.builder()
-                    .email(orderItem.getOrder().getEmail())
-                    .address(orderItem.getOrder().getAddress())
-                    .postcode(orderItem.getOrder().getPostcode())
-                    .productName(orderItem.getProduct().getProductName())
-                    .price(orderItem.getPrice())
-                    .quantity(orderItem.getQuantity())
-                    .category(orderItem.getCategory())
-                    .build());
-        });
+        orderItemList.forEach(orderItem -> orderItemDTOS.add(OrderItemDTO.builder()
+                .email(orderItem.getOrder().getEmail())
+                .address(orderItem.getOrder().getAddress())
+                .postcode(orderItem.getOrder().getPostcode())
+                .productName(orderItem.getProduct().getProductName())
+                .price(orderItem.getPrice())
+                .quantity(orderItem.getQuantity())
+                .category(orderItem.getCategory())
+                .build()));
         return orderItemDTOS;
     }
 
@@ -125,9 +123,7 @@ public class OrderItemService {
     public boolean deleteAllByOrderId(Integer orderId) {
         List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
         try {
-            for (OrderItem orderItem : orderItemList) {
-                orderItemRepository.delete(orderItem);
-            }
+            orderItemRepository.deleteAll(orderItemList);
             return true;
         } catch (OrderTaskException e) {
             return false;
