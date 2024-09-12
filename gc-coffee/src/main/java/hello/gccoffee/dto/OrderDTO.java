@@ -16,7 +16,6 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Log4j2
 public class OrderDTO {
 
     @Email

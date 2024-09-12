@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderItemDTO {
 
-    // description 필요 시 추가
+//    private String description;
 //    private int productId;
 
     private Integer orderId;

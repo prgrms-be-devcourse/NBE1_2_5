@@ -42,10 +42,6 @@ public class OrderItem {
         this.price = price;
     }
 
-    public void changeQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public void changeProduct(Product product) {
         this.product = product;
     }

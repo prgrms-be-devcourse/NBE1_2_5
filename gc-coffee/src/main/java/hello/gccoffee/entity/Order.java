@@ -41,7 +41,7 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public void addOrderItems(OrderItem orderItem) {
-        if(orderItems.contains(orderItem))return;
+        if (orderItems.contains(orderItem)) return;
         orderItems.add(orderItem);
     }
 
