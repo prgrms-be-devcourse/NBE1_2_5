@@ -41,14 +41,18 @@ public interface AdminApiControllerDocs {
     @Operation(summary = "주문 내역 수정", description = "주문자의 요청으로 주문 번호와 변경할 내용을 받아 해당 주문을 수정합니다.")
     @Parameter(name = "orderItemId", description = "주문 상품 번호")
     ResponseEntity<OrderItemDTO> updateOrderItem(@Validated @RequestBody OrderItemDTO orderItemDTO,
-                                                 @PathVariable Integer orderItemId);
+                                                 @PathVariable Integer orderItemId,
+                                                 @RequestParam("adminPassword") String adminPassword);
 
     @Operation(summary = "주문 내역 단일 삭제", description = "주문자의 이메일과 주문 번호를 받아 해당하는 단일 주문을 삭제합니다.")
     @Parameter(name = "orderId", description = "주문 번호")
     @Parameter(name = "email", description = "주문자의 이메일")
-    ResponseEntity<Map<String, String>> deleteOneOrder(@PathVariable Integer orderId, @RequestParam String email);
+    ResponseEntity<Map<String, String>> deleteOneOrder(@PathVariable Integer orderId,
+                                                       @RequestParam String email,
+                                                       @RequestParam("adminPassword") String adminPassword);
 
     @Operation(summary = "주문 내역 전체 삭제", description = "주문자의 이메일을 받아 해당하는 전체 주문을 삭제합니다.")
     @Parameter(name = "email", description = "주문자의 이메일")
-    ResponseEntity<Map<String, String>> deleteAllOrder(@RequestParam String email);
+    ResponseEntity<Map<String, String>> deleteAllOrder(@RequestParam String email,
+                                                       @RequestParam("adminPassword") String adminPassword);
 }
