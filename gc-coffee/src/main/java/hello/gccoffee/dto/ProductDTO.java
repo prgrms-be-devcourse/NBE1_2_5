@@ -31,7 +31,7 @@ public class ProductDTO {
     private String productName;
 
     @NotNull(message = "*카테고리는 필수 입력 값입니다.")
-    @Schema(description = "상품 종류")
+    @Schema(description = "카테고리")
     private Category category;
 
     @NotNull(message = "*가격은 필수 입력 값입니다.")

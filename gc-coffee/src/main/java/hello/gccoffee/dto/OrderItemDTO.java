@@ -27,7 +27,7 @@ public class OrderItemDTO {
     @Schema(description = "주문 번호", example = "1")
     private Integer orderId;
 
-    @Parameter(name = "orderItemId", description = "주문한 상품 번호", example = "1")
+    @Schema(description = "주문한 상품 번호", example = "1")
     private Integer orderItemId;
 
     @NotBlank(message = "이메일을 입력해주세요")
