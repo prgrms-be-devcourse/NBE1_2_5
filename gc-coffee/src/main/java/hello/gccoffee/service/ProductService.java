@@ -27,19 +27,19 @@ public class ProductService {
             return new ProductDTO(product);
         } catch (ProductTaskException e) {
             log.error("---" + e.getMessage());
-            throw ProductException.NOT_REGISTERED.get();
+            throw ProductException.PRODUCT_NOT_REGISTERED.get();
         }
     }
 
     public ProductDTO read(int pno) {     //상품 조회
-        Product product = productRepository.findById(pno).orElseThrow(ProductException.NOT_FOUND::get);
+        Product product = productRepository.findById(pno).orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
         return new ProductDTO(product);
     }
 
     public ProductDTO modify(ProductDTO productDTO) {
-        if (productDTO == null) throw ProductException.NOT_FOUND.get();
+        if (productDTO == null) throw ProductException.PRODUCT_NOT_FOUND.get();
         Optional<Product> foundProduct = productRepository.findById(productDTO.getProductId());
-        Product product = foundProduct.orElseThrow(ProductException.NOT_FOUND::get);
+        Product product = foundProduct.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
 
         log.info(product.toString());
         try {
@@ -51,19 +51,19 @@ public class ProductService {
 
             return new ProductDTO(product);
         } catch (Exception e) {
-            throw ProductException.FAIL_MODIFY.get();
+            throw ProductException.PRODUCT_NOT_UPDATED.get();
         }
     }
 
     public void remove(int pno) {
         Optional<Product> foundProduct = productRepository.findById(pno);
-        Product product = foundProduct.orElseThrow(ProductException.NOT_FOUND::get);
+        Product product = foundProduct.orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
 
         try {
             productRepository.delete(product);
         } catch(Exception e) {
             log.error("--- " + e.getMessage());
-            throw ProductException.NOT_REMOVED.get();
+            throw ProductException.PRODUCT_NOT_REMOVED.get();
         }
     }
 }

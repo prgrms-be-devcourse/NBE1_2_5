@@ -81,7 +81,7 @@ public class ProductServiceTest {
 
                 productRepository.save(product);
             }
-            Product product = productRepository.findById(i<3?1:2).orElseThrow(ProductException.NOT_FOUND::get);
+            Product product = productRepository.findById(i<3?1:2).orElseThrow(ProductException.PRODUCT_NOT_FOUND::get);
 
             //Order 데이터 생성
             Order order = Order.builder()

@@ -39,7 +39,7 @@ public class OrderApiController {
     public ResponseEntity<OrderDTO> addOrder(@Validated @RequestBody OrderDTO orderDTO,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw OrderException.BAD_RESOURCE.get();
+            throw OrderException.INVALID_RESOURCE.get();
         }
         return ResponseEntity.ok(orderMainService.addOrders(orderDTO));
     }
@@ -51,7 +51,7 @@ public class OrderApiController {
                                                BindingResult bindingResult) {
         log.info("orderId = {}, items = {}", orderId, items.toString());
         if (bindingResult.hasErrors()) {
-            throw OrderException.BAD_RESOURCE.get();
+            throw OrderException.INVALID_RESOURCE.get();
         }
         Order findOrder = orderService.findById(orderId);
 
@@ -88,10 +88,10 @@ public class OrderApiController {
                                                            @PathVariable Integer orderItemId) {
         validateEmail(email);
         if (orderId == null || orderId.toString().isEmpty()) {
-            throw OrderException.NOT_FOUND_ORDER.get();
+            throw OrderException.ORDER_NOT_FOUND.get();
         }
         if (orderItemId == null) {
-            throw OrderException.NOT_FOUND_ORDER_ITEM.get();
+            throw OrderException.ORDER_ITEM_NOT_FOUND.get();
         }
         orderMainService.removeOrder(email, orderId, orderItemId);
         return ResponseEntity.ok(Map.of(
@@ -108,10 +108,10 @@ public class OrderApiController {
         validateEmail(email);
         orderItemDTO.setOrderId(orderId);
         if (orderId == null || orderId.toString().isEmpty()) {
-            throw OrderException.NOT_FOUND_ORDER.get();
+            throw OrderException.ORDER_NOT_FOUND.get();
         }
         if (orderItemId == null) {
-            throw OrderException.NOT_FOUND_ORDER_ITEM.get();
+            throw OrderException.ORDER_ITEM_NOT_FOUND.get();
         }
         orderItemDTO.setOrderItemId(orderItemId);
         return ResponseEntity.ok(orderMainService.updateOrderItemInOrder(orderItemDTO));

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +23,12 @@ public class OrderService {
 
     // email을 받고, 해당하는 주문의 orderId 반환
     public OrderDTO findByEmail(String email) {
-        Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+        Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
         return new OrderDTO(foundOrder);
     }
     //Email 엔티티 받기
     public List<Order> findEntityByEmail(String email) {
-        return orderRepository.findByEmails(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+        return orderRepository.findByEmails(email).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
     }
 
     public OrderDTO addOrders(OrderDTO orderDTO) {
@@ -43,12 +42,12 @@ public class OrderService {
     }
 
     public Order findById(int orderId) {
-        return orderRepository.findById(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+        return orderRepository.findById(orderId).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
     }
 
     public boolean deleteOneOrderOfOne(int OrderId) {
         try {
-            Order order = orderRepository.findById(OrderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+            Order order = orderRepository.findById(OrderId).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
             orderRepository.delete(order);
             return true;
         } catch (OrderTaskException e) {

@@ -2,13 +2,10 @@ package hello.gccoffee.service;
 
 
 import hello.gccoffee.dto.OrderItemDTO;
-import hello.gccoffee.dto.ProductDTO;
 import hello.gccoffee.entity.Order;
-import hello.gccoffee.entity.OrderEnum;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
 import hello.gccoffee.exception.OrderException;
-import hello.gccoffee.exception.OrderItemException;
 import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.OrderItemRepository;
 import hello.gccoffee.repository.OrderRepository;
@@ -34,7 +31,7 @@ public class OrderItemService {
     // orderId(혹은 order)에 해당하는 상품들 조회
     public List<OrderItemDTO> getAllItems(int orderId) {
 
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER_ID::get);
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ID_NOT_FOUND::get);
         log.info("orderItemList: " + orderItemList);
 
 
@@ -81,7 +78,7 @@ public class OrderItemService {
     public OrderItemDTO modify(OrderItemDTO orderItemDTO, int orderItemId) {
 
         //수정할 OrderItem 찾기
-        OrderItem foundOrderItem = orderItemRepository.findById(orderItemId).orElseThrow(OrderItemException.NOT_FOUND::get);
+        OrderItem foundOrderItem = orderItemRepository.findById(orderItemId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
 
         //OrderItem 수정
         foundOrderItem.changeProduct(foundOrderItem.getProduct());
@@ -96,7 +93,7 @@ public class OrderItemService {
 
     public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
         if (!order.getOrderItems().isEmpty()) {
-            throw OrderException.ORDER_LIST_EXIST.get();
+            throw OrderException.ORDER_LIST_ALREADY_EXISTS.get();
         }
 
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -106,18 +103,18 @@ public class OrderItemService {
 
             Product product = productRepository.findByProductName(productName);
             //상품 확인 절차
-            if (product == null) throw OrderException.BAD_RESOURCE.get();
-            if (product.getPrice() != item.getPrice()) throw OrderException.BAD_RESOURCE.get();
+            if (product == null) throw OrderException.INVALID_RESOURCE.get();
+            if (product.getPrice() != item.getPrice()) throw OrderException.INVALID_RESOURCE.get();
             int productId = product.getProductId();
 
             OrderItem orderItem = item.toEntity(productId, order.getOrderId());
             //회원정보 확인 절차
             if (!orderItem.getOrder().getEmail().equals(order.getEmail()))
-                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                throw OrderException.INVALID_ORDER_DETAILS.get();
             if (!orderItem.getOrder().getPostcode().equals(order.getPostcode()))
-                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                throw OrderException.INVALID_ORDER_DETAILS.get();
             if (!orderItem.getOrder().getAddress().equals(order.getAddress()))
-                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                throw OrderException.INVALID_ORDER_DETAILS.get();
             //가격
             orderItemRepository.save(orderItem);
             order.addOrderItems(orderItem);
@@ -150,7 +147,7 @@ public class OrderItemService {
             );
 
             if (deletedCount == 0) {
-                throw OrderException.NOT_DELETE_ITEM.get();
+                throw OrderException.ORDER_ITEM_NOT_REMOVED.get();
             }
 
             return product.getProductId();
@@ -172,10 +169,10 @@ public class OrderItemService {
     // 해당 OrderItem을 새로운 내역으로 수정
     public OrderItemDTO updateOrderItem(OrderItemDTO orderItemDTO) {
         OrderItem orderItem = orderItemRepository.findById(orderItemDTO.getOrderItemId())
-                .orElseThrow(OrderException.NOT_FOUND_ORDER_ITEM::get);
+                .orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
 
         Product foundProduct = productRepository.findByProductName(orderItemDTO.getProductName());
-        if (foundProduct == null) throw OrderException.BAD_RESOURCE.get();
+        if (foundProduct == null) throw OrderException.INVALID_RESOURCE.get();
 
         // 수량이 0인 경우 예외 -> OrderItem 삭제 기능 사용하도록 유도
         if (orderItemDTO.getQuantity() == 0) {
