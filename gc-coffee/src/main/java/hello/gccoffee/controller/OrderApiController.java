@@ -9,6 +9,8 @@ import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.service.OrderItemService;
 import hello.gccoffee.service.OrderMainService;
 import hello.gccoffee.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,11 +27,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 @Log4j2
+@Tag(name = "User API", description = "사용자 기능에 대한 API")
 public class OrderApiController {
     private final OrderMainService orderMainService;
     private final OrderService orderService;
     private final OrderItemService orderItemService;
 
+    @Operation
     @GetMapping
     public ResponseEntity<List<OrderItemDTO>> read(@RequestParam("email") String email) {
         log.info("===== read() =====");
@@ -130,8 +134,6 @@ public class OrderApiController {
         OrderItemDTO updatedOrderItem = orderMainService.updateOrderItemInOrder(orderItemDTO);
         return ResponseEntity.ok(updatedOrderItem);
     }
-
-
 
 }
 

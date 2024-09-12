@@ -3,6 +3,7 @@ package hello.gccoffee.dto;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderEnum;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -17,9 +18,11 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 @Builder
 @Log4j2
+@Schema(description = "주문 정보 DTO")
 public class OrderDTO {
 
     @Email
+    @Schema(description = "사용자 이메일", example = "hong@gmail.com")
     private String email;
 
     @NotBlank
