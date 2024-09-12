@@ -5,20 +5,14 @@ import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.exception.OrderException;
 import hello.gccoffee.exception.OrderTaskException;
-import hello.gccoffee.repository.OrderItemRepository;
-import hello.gccoffee.repository.OrderRepository;
 import hello.gccoffee.entity.Order;
-import hello.gccoffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +59,7 @@ public class OrderMainService {
     public void removeOrder(String email, Integer orderId, Integer orderItemId) {
         log.info("OrderMainService ===> removeOrder() ");
         Order order = orderService.getOrders(email, orderId, orderItemId);
-        orderItemService.deleteoneTem(email, orderId, orderItemId);
+        orderItemService.deleteSingleOrderItem(email, orderId, orderItemId);
     }
 
     // 관리자 주문 수정
@@ -112,11 +106,9 @@ public class OrderMainService {
         return orderService.addOrders(orderDTO);
     }
 
-//    수정 필요! 구현 실패..
-//    public Order addOrderItems(Integer orderId, List<OrderItemDTO> items) {
-//        Order findOrder = orderService.findById(orderId);
-//
-//        List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
-//        return
-//    }
+    public OrderDTO addOrderItems(Integer orderId, List<OrderItemDTO> items) {
+        Order foundOrder = orderService.findById(orderId);
+        orderItemService.addItems(foundOrder, items);
+        return new OrderDTO(foundOrder);
+    }
 }

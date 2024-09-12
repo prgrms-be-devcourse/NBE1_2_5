@@ -162,7 +162,7 @@ public class OrderItemService {
         orderItemRepository.deleteByOrderOrderId(orderId);
     }
 
-    public void deleteoneTem(String email, Integer orderId, Integer orderItemId) {
+    public void deleteSingleOrderItem(String email, Integer orderId, Integer orderItemId) {
         orderItemRepository.deleteByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId);
     }
 
