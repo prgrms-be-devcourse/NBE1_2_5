@@ -5,6 +5,7 @@ import hello.gccoffee.dto.ProductDTO;
 import hello.gccoffee.exception.AdminAuthenticationException;
 import hello.gccoffee.service.OrderMainService;
 import hello.gccoffee.service.ProductService;
+import hello.gccoffee.swagger.AdminApiControllerDocs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/admin")
-public class AdminApiController {
+public class AdminApiController implements AdminApiControllerDocs {
 
     private final ProductService productService;
     private final OrderMainService orderMainService;
