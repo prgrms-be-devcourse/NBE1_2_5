@@ -5,14 +5,12 @@ import hello.gccoffee.dto.OrderItemDTO;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.exception.OrderException;
-import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.service.OrderItemService;
 import hello.gccoffee.service.OrderMainService;
 import hello.gccoffee.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,41 +23,33 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 @Log4j2
-public class OrderApiController {
+public class OrderApiController implements OrderApiControllerDocs {
+
     private final OrderMainService orderMainService;
-    private final OrderService orderService;
-    private final OrderItemService orderItemService;
+    private final OrderService orderService;            // 수정 필요!
+    private final OrderItemService orderItemService;    // 수정 필요!
 
     @GetMapping
-    public ResponseEntity<List<OrderItemDTO>> read(@RequestParam("email") String email) {
-        log.info("===== read() =====");
-
-        checkEmail(email);
-
-        log.info("APIController ===> orderItemsDTOS 호출");
-        List<OrderItemDTO> orderItemDTOS = orderMainService.readOrder(email);
-        log.info("APIController ===> orderMainService에서 orderItemDTOs 반환 : " + orderItemDTOS);
+    public ResponseEntity<List<OrderItemDTO>> readOrder(@RequestParam("email") String email) {
+        validateEmail(email);
         return ResponseEntity.ok(orderMainService.readOrder(email));
     }
 
     @PostMapping
-    public ResponseEntity<Order> addOrder(@Validated @RequestBody OrderDTO orderDTO, BindingResult bindingResult) {
+    public ResponseEntity<OrderDTO> addOrder(@Validated @RequestBody OrderDTO orderDTO,
+                                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw OrderException.BAD_RESOURCE.get();
         }
-
-        Order order = orderService.addOrders(orderDTO);
-
-        return ResponseEntity.ok(order);
-
+        return ResponseEntity.ok(orderMainService.addOrders(orderDTO));
     }
 
+    // 수정 필요!
     @PostMapping("/{orderId}")
-    public ResponseEntity<Order> addOrderItems
-            //validated -> valid로 교체 : validated는 List안 orderItemDTO를 검증해주지 못함(실수가능성 있음)
-            (@PathVariable int orderId, @Valid @RequestBody List<OrderItemDTO> items, BindingResult bindingResult) {
-
-        log.info("orderId = {}, items = {}",orderId,items.toString());
+    public ResponseEntity<Order> addOrderItems(@PathVariable Integer orderId,
+                                               @Valid @RequestBody List<OrderItemDTO> items, // validated -> valid로 교체 : validated는 List안 orderItemDTO를 검증해주지 못함(실수가능성 있음)
+                                               BindingResult bindingResult) {
+        log.info("orderId = {}, items = {}", orderId, items.toString());
         if (bindingResult.hasErrors()) {
             throw OrderException.BAD_RESOURCE.get();
         }
@@ -68,6 +58,8 @@ public class OrderApiController {
         List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
 
         return ResponseEntity.ok(findOrder);
+        // 최종 리턴 형태
+        // return ResponseEntity.ok(orderMainService.addOrderItems(orderId, items));
     }
 
 //    //임시 조회
@@ -77,7 +69,6 @@ public class OrderApiController {
 //        List<Order> allByEmail = orderService.findAllByEmail(email);
 //        return ResponseEntity.ok(allByEmail);
 //    }
-
 
 ////     주문, 주문자 전체 삭제
 //    @DeleteMapping
@@ -93,19 +84,40 @@ public class OrderApiController {
     // 원하는 주문만 삭제
     @DeleteMapping("/{orderId}/{orderItemId}")
     public ResponseEntity<Map<String, String>> deleteOrder(@RequestParam("email") String email,
-                                                           @PathVariable int orderId,
-                                                           @PathVariable int orderItemId) {
-        checkEmail(email);
+                                                           @PathVariable Integer orderId,
+                                                           @PathVariable Integer orderItemId) {
+        validateEmail(email);
+        if (orderId == null || orderId.toString().isEmpty()) {
+            throw OrderException.NOT_FOUND_ORDER.get();
+        }
+        if (orderItemId == null) {
+            throw OrderException.NOT_FOUND_ORDER_ITEM.get();
+        }
         orderMainService.removeOrder(email, orderId, orderItemId);
         return ResponseEntity.ok(Map.of(
                 "result", "success",
-                "message", "Order has been deleted successfully"
+                "message", "Order has been deleted successfully. Deleted ID: " + orderItemId
         ));
     }
 
+    @PutMapping("/{orderId}/{orderItemId}")
+    public ResponseEntity<OrderItemDTO> updateSingleOrderItem(@RequestParam("email") String email,
+                                                              @PathVariable Integer orderId,
+                                                              @PathVariable("orderItemId") Integer orderItemId,
+                                                              @RequestBody @Validated OrderItemDTO orderItemDTO) {
+        validateEmail(email);
+        orderItemDTO.setOrderId(orderId);
+        if (orderId == null || orderId.toString().isEmpty()) {
+            throw OrderException.NOT_FOUND_ORDER.get();
+        }
+        if (orderItemId == null) {
+            throw OrderException.NOT_FOUND_ORDER_ITEM.get();
+        }
+        orderItemDTO.setOrderItemId(orderItemId);
+        return ResponseEntity.ok(orderMainService.updateOrderItemInOrder(orderItemDTO));
+    }
 
-
-    private static void checkEmail(String email) {
+    private static void validateEmail(String email) {
         // email 값이 비어있는 경우
         if (email == null || email.trim().isEmpty()) {
             throw OrderException.MISSING_EMAIL.get();
@@ -116,22 +128,4 @@ public class OrderApiController {
             throw OrderException.INVALID_EMAIL.get();
         }
     }
-
-
-
-    @PutMapping("/orderItems/{orderItemId}")
-    public ResponseEntity<OrderItemDTO> updateSingleOrderItem(@PathVariable("orderItemId") Integer orderItemId,
-                                                              @RequestBody @Validated OrderItemDTO orderItemDTO) {
-        if (orderItemId == null) {
-            throw OrderException.MISSING_ORDER_ITEM_ID.get();
-        }
-        orderItemDTO.setOrderItemId(orderItemId);
-
-        OrderItemDTO updatedOrderItem = orderMainService.updateOrderItemInOrder(orderItemDTO);
-        return ResponseEntity.ok(updatedOrderItem);
-    }
-
-
-
 }
-

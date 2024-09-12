@@ -126,7 +126,7 @@ public class OrderItemService {
     }
 
     public boolean deleteAllByOrderId(int orderId) {
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_REGISTERED::get);
         try {
             for (OrderItem orderItem : orderItemList) {
                 orderItemRepository.delete(orderItem);

@@ -4,6 +4,7 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,10 +24,10 @@ public class OrderItemDTO {
     // description 필요 시 추가
 //    private int productId;
 
-
+    @Schema(description = "주문 번호", example = "1")
     private Integer orderId;
 
-    @Schema(description = "주문 상품 ID", example = "1")
+    @Parameter(name = "orderItemId", description = "주문한 상품 번호", example = "1")
     private Integer orderItemId;
 
     @NotBlank(message = "이메일을 입력해주세요")
@@ -43,21 +44,24 @@ public class OrderItemDTO {
     private String postcode;
 
     @NotBlank(message = "상품이름을 입력해주세요")
-    @Schema(description = "상품 이름", example = "Colu")
+    @Schema(description = "상품 이름", example = "Columbia Coffee")
     private String productName;
 
     @NotNull(message = "가격을 입력해주세요")
     @Min(0)
     @Max(1_000_000)
+    @Schema(description = "상품 가격", example = "10000" )
     private int price;
 
     @NotNull(message = "수량을 입력해주세요")
     @Min(0)
     @Max(100)
+    @Schema(description = "상품 수량", example = "3")
     private int quantity;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "카테고리를 입력해주세요")
+    @Schema(description = "카테고리")
     private Category category;
 
     public OrderItemDTO(OrderItem orderItem) {

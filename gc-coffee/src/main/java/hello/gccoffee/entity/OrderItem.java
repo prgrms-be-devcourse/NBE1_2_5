@@ -1,6 +1,7 @@
 package hello.gccoffee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,27 +12,34 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "주문 상품 Entity")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "주문 상품 ID")
     private int orderItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     @JsonIgnore
+    @Schema(description = "주문 정보")
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @JsonIgnore
+    @Schema(description = "상품 정보")
     private Product product;
 
     @Enumerated(EnumType.STRING)
+    @Schema(description = "카테고리")
     private Category category;
 
+    @Schema(description = "상품 가격")
     private Integer price;
 
+    @Schema(description = "상품 수량")
     private Integer quantity;
 
     public void changeCategory(Category category) {

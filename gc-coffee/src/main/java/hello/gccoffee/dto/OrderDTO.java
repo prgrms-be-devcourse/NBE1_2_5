@@ -26,13 +26,17 @@ public class OrderDTO {
     private String email;
 
     @NotBlank
+    @Schema(description = "주문자 우편번호", example = "15888")
     private String postcode;
 
     @NotBlank
+    @Schema(description = "주문자 주소", example = "서울시 강남구")
     private String address;
 
+    @Schema(description = "주문 상태", defaultValue = "ORDER_ACCEPTED")
     private OrderEnum orderEnum;
 
+    @Schema(description = "주문 번호")
     private Integer orderId;
 
     public OrderDTO(Order order) {
