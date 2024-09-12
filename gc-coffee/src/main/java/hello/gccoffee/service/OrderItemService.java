@@ -2,11 +2,13 @@ package hello.gccoffee.service;
 
 
 import hello.gccoffee.dto.OrderItemDTO;
+import hello.gccoffee.dto.ProductDTO;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderEnum;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
 import hello.gccoffee.exception.OrderException;
+import hello.gccoffee.exception.OrderItemException;
 import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.OrderItemRepository;
 import hello.gccoffee.repository.OrderRepository;
@@ -76,31 +78,20 @@ public class OrderItemService {
     }
 
     //관리자 주문 수정
-    public OrderItemDTO modify(OrderItemDTO orderItemDTO, List<Order> order, int orderItemId) {
-        // 1개의 order 찾기
-//        List<Order> collectOrderItemId = order.stream().filter(i -> i.getOrderId() == orderItemId).toList();
-//        Order foundOrder = collectOrderItemId.get(0);
+    public OrderItemDTO modify(OrderItemDTO orderItemDTO, int orderItemId) {
 
-        Order foundOrder = order.stream().filter(i -> i.getOrderId() == orderItemId).findAny().orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
+        //수정할 OrderItem 찾기
+        OrderItem foundOrderItem = orderItemRepository.findById(orderItemId).orElseThrow(OrderItemException.NOT_FOUND::get);
 
-        //수정할 주문상세 페이지 찾기
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(foundOrder.getOrderId())
-                .orElseThrow(OrderException.NOT_FOUND_ORDER_ID::get);
-        List<OrderItem> collect = orderItemList.stream().filter(i -> i.getOrderItemId()==orderItemId).toList();
-        OrderItem orderItem = collect.get(0);
+        //OrderItem 수정
+        foundOrderItem.changeProduct(foundOrderItem.getProduct());
+        foundOrderItem.changeCategory(orderItemDTO.getCategory());
+        foundOrderItem.changeOrder(foundOrderItem.getOrder());
+        foundOrderItem.changeQuantity(orderItemDTO.getQuantity());
+        foundOrderItem.changePrice(foundOrderItem.getProduct().getPrice() * orderItemDTO.getQuantity());
+        orderItemRepository.save(foundOrderItem);
 
-        //상품찾기
-        Product foundProduct = productRepository.findByProductName(orderItemDTO.getProductName());
-
-        //수정
-        orderItem.changeProduct(foundProduct);
-        orderItem.changeOrder(foundOrder);
-        orderItem.changeCategory(orderItemDTO.getCategory());
-        orderItem.changeQuantity(orderItemDTO.getQuantity());
-        orderItem.changePrice(orderItemDTO.getPrice());
-        orderItemRepository.save(orderItem);
-
-        return new OrderItemDTO(orderItem);
+        return new OrderItemDTO(foundOrderItem);
     }
 
     public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
@@ -142,9 +133,9 @@ public class OrderItemService {
                 orderItemRepository.delete(orderItem);
             }
             return true;
-        }catch (OrderTaskException e){
+        } catch (OrderTaskException e) {
             return false;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return orderItemList.isEmpty();
         }
     }
@@ -202,6 +193,6 @@ public class OrderItemService {
             throw OrderException.ORDER_ITEM_NOT_UPDATED.get();
         }
 
-}
+    }
 }
 

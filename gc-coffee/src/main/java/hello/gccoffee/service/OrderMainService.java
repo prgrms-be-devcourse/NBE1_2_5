@@ -69,9 +69,8 @@ public class OrderMainService {
     }
 
     // 관리자 주문 수정
-    public OrderItemDTO modifyOrder(OrderItemDTO orderItemDTO, int orderItemId) {
-        List<Order> order = orderService.findEntityByEmail(orderItemDTO.getEmail());
-        return orderItemService.modify(orderItemDTO, order, orderItemId);
+    public OrderItemDTO updateOrderItem(OrderItemDTO orderItemDTO, int orderItemId) {
+        return orderItemService.modify(orderItemDTO, orderItemId);
     }
 
     // 주문 조회 창에서 개별 주문 수정

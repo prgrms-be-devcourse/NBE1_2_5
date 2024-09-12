@@ -1,7 +1,8 @@
 package hello.gccoffee.exception;
 
 public enum OrderItemException {
-    FAIL_DELETE("DELETE FAILED", 400);
+    FAIL_DELETE("DELETE FAILED", 400),
+    NOT_FOUND("NOT FOUND ORDER_ITEM", 400);
 
     private final OrderItemTaskException orderItemTaskException;
 

@@ -74,13 +74,12 @@ public class AdminApiController {
         }
     }
 
-    @PutMapping("/orders")
+    @PutMapping("/orders/{orderItemId}") //관리자 상품 주문 수정
     public ResponseEntity<OrderItemDTO> update(@Validated
                                                @RequestBody OrderItemDTO orderItemDTO,
-                                               @RequestParam int orderItemId) {
+                                               @PathVariable int orderItemId) {
 
-        OrderItemDTO orderItemDTOS = orderMainService.modifyOrder(orderItemDTO, orderItemId);
-        return ResponseEntity.ok(orderItemDTOS);
+        return ResponseEntity.ok(orderMainService.updateOrderItem(orderItemDTO, orderItemId));
     }
 
     @GetMapping("/orders/orderlist")   //관리자 주문 목록 조회
