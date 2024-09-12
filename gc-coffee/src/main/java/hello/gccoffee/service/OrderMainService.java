@@ -2,19 +2,23 @@ package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.dto.OrderItemDTO;
+import hello.gccoffee.entity.OrderItem;
+import hello.gccoffee.exception.OrderException;
+import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.OrderItemRepository;
 import hello.gccoffee.repository.OrderRepository;
 import hello.gccoffee.entity.Order;
-import hello.gccoffee.repository.OrderItemRepository;
-import hello.gccoffee.repository.OrderRepository;
 import hello.gccoffee.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -79,4 +83,46 @@ public class OrderMainService {
         // 트랜잭션 완료 시 Order 객체의 orderList에도 자동으로 반영
         return orderItemService.updateOrderItem(orderItemDTO);
     }
+
+    public void removeOrder(Integer orderId, String email) {
+        // 확인 절차
+        List<Integer> orderIdsByEmail = orderService.findOrderIdsByEmail(email);
+        if (orderIdsByEmail.contains(orderId)) {
+            // 삭제 로직
+            try {
+                orderItemService.deleteAllByOrderId(orderId);
+                orderService.deleteOneOrderOfOne(orderId);
+            } catch (OrderTaskException e) {
+                // 실패 반환
+                throw OrderException.ORDER_NOT_REMOVED.get();
+            }
+        } else {
+            //주문번호가 해당 이메일이 아니면 실패 반환
+            throw OrderException.MISSING_EMAIL.get();
+        }
+    }
+
+    public List<Integer> removeAllOrder(String email) {
+        try {
+            List<Integer> orderIdsByEmail = orderService.findOrderIdsByEmail(email);
+            for (Integer orderId : orderIdsByEmail) {
+                orderItemService.deleteAllByOrderId(orderId);
+            }
+            orderService.deleteAllOrderOfOne(email);
+            return orderIdsByEmail;
+        } catch (OrderTaskException e) {
+            throw OrderException.ORDER_NOT_REMOVED.get();
+        }
+    }
+
+    public OrderDTO addOrders(OrderDTO orderDTO) {
+        return orderService.addOrders(orderDTO);
+    }
+
+//    public Order addOrderItems(Integer orderId, List<OrderItemDTO> items) {
+//        Order findOrder = orderService.findById(orderId);
+//
+//        List<OrderItem> orderItemList = orderItemService.addItems(findOrder, items);
+//        return
+//    }
 }

@@ -32,11 +32,11 @@ public class OrderService {
         return orderRepository.findByEmails(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
     }
 
-    public Order addOrders(OrderDTO orderDTO) {
+    public OrderDTO addOrders(OrderDTO orderDTO) {
         try {
             Order order = orderDTO.toEntity();
             orderRepository.save(order);
-            return order;
+            return new OrderDTO(order);
         } catch (OrderTaskException e) {
             throw OrderException.ORDER_NOT_REGISTERED.get();
         }
