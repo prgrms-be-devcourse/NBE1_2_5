@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/admin")
-public class AdminApiController implements AdminApiControllerDocs {
+public class AdminApiController {
 
     private final ProductService productService;
     private final OrderMainService orderMainService;
@@ -54,21 +54,6 @@ public class AdminApiController implements AdminApiControllerDocs {
     public ResponseEntity<List<OrderItemDTO>> getOrderList(@RequestParam("adminPassword") String adminPassword) {
         validateAdminPassword(adminPassword);
         return ResponseEntity.ok(orderMainService.getList());
-    }
-
-    @Override
-    public ResponseEntity<OrderItemDTO> updateOrderItem(OrderItemDTO orderItemDTO, Integer orderItemId) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Map<String, String>> deleteOneOrder(Integer orderId, String email) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Map<String, String>> deleteAllOrder(String email) {
-        return null;
     }
 
     // 관리자 주문 내역 수정

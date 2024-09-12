@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "주문 상품 DTO")
 public class OrderItemDTO {
 
-    // description 필요 시 추가
+//    private String description;
 //    private int productId;
 
     @Schema(description = "주문 번호", example = "1")

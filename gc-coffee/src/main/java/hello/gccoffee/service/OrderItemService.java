@@ -2,13 +2,10 @@ package hello.gccoffee.service;
 
 
 import hello.gccoffee.dto.OrderItemDTO;
-import hello.gccoffee.dto.ProductDTO;
 import hello.gccoffee.entity.Order;
-import hello.gccoffee.entity.OrderEnum;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
 import hello.gccoffee.exception.OrderException;
-import hello.gccoffee.exception.OrderItemException;
 import hello.gccoffee.exception.OrderTaskException;
 import hello.gccoffee.repository.OrderItemRepository;
 import hello.gccoffee.repository.OrderRepository;
@@ -27,14 +24,14 @@ import java.util.List;
 @Transactional
 @Log4j2
 public class OrderItemService {
+
     private final OrderItemRepository orderItemRepository;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository; //문제점1
 
     // orderId(혹은 order)에 해당하는 상품들 조회
-    public List<OrderItemDTO> getAllItems(int orderId) {
-
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER_ID::get);
+    public List<OrderItemDTO> getAllItems(Integer orderId) {
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ID_NOT_FOUND::get);
         log.info("orderItemList: " + orderItemList);
 
 
@@ -63,25 +60,23 @@ public class OrderItemService {
         List<OrderItem> orderItemList = orderItemRepository.findAll();
         List<OrderItemDTO> orderItemDTOS = new ArrayList<>();
 
-        orderItemList.forEach(orderItem -> {
-            orderItemDTOS.add(OrderItemDTO.builder()
-                    .email(orderItem.getOrder().getEmail())
-                    .address(orderItem.getOrder().getAddress())
-                    .postcode(orderItem.getOrder().getPostcode())
-                    .productName(orderItem.getProduct().getProductName())
-                    .price(orderItem.getPrice())
-                    .quantity(orderItem.getQuantity())
-                    .category(orderItem.getCategory())
-                    .build());
-        });
+        orderItemList.forEach(orderItem -> orderItemDTOS.add(OrderItemDTO.builder()
+                .email(orderItem.getOrder().getEmail())
+                .address(orderItem.getOrder().getAddress())
+                .postcode(orderItem.getOrder().getPostcode())
+                .productName(orderItem.getProduct().getProductName())
+                .price(orderItem.getPrice())
+                .quantity(orderItem.getQuantity())
+                .category(orderItem.getCategory())
+                .build()));
         return orderItemDTOS;
     }
 
     //관리자 주문 수정
-    public OrderItemDTO modify(OrderItemDTO orderItemDTO, int orderItemId) {
+    public OrderItemDTO modify(OrderItemDTO orderItemDTO, Integer orderItemId) {
 
         //수정할 OrderItem 찾기
-        OrderItem foundOrderItem = orderItemRepository.findById(orderItemId).orElseThrow(OrderItemException.NOT_FOUND::get);
+        OrderItem foundOrderItem = orderItemRepository.findById(orderItemId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
 
         //OrderItem 수정
         foundOrderItem.changeProduct(foundOrderItem.getProduct());
@@ -96,7 +91,7 @@ public class OrderItemService {
 
     public List<OrderItem> addItems(Order order, List<OrderItemDTO> items) {
         if (!order.getOrderItems().isEmpty()) {
-            throw OrderException.ORDER_LIST_EXIST.get();
+            throw OrderException.ORDER_LIST_ALREADY_EXISTS.get();
         }
 
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -106,18 +101,18 @@ public class OrderItemService {
 
             Product product = productRepository.findByProductName(productName);
             //상품 확인 절차
-            if (product == null) throw OrderException.BAD_RESOURCE.get();
-            if (product.getPrice() != item.getPrice()) throw OrderException.BAD_RESOURCE.get();
-            int productId = product.getProductId();
+            if (product == null) throw OrderException.INVALID_RESOURCE.get();
+            if (product.getPrice() != item.getPrice()) throw OrderException.INVALID_RESOURCE.get();
+            Integer productId = product.getProductId();
 
             OrderItem orderItem = item.toEntity(productId, order.getOrderId());
             //회원정보 확인 절차
             if (!orderItem.getOrder().getEmail().equals(order.getEmail()))
-                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                throw OrderException.INVALID_ORDER_DETAILS.get();
             if (!orderItem.getOrder().getPostcode().equals(order.getPostcode()))
-                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                throw OrderException.INVALID_ORDER_DETAILS.get();
             if (!orderItem.getOrder().getAddress().equals(order.getAddress()))
-                throw OrderException.WRONG_ORDER_IN_ITEM_LIST.get();
+                throw OrderException.INVALID_ORDER_DETAILS.get();
             //가격
             orderItemRepository.save(orderItem);
             order.addOrderItems(orderItem);
@@ -125,12 +120,10 @@ public class OrderItemService {
         return orderItemList;
     }
 
-    public boolean deleteAllByOrderId(int orderId) {
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_REGISTERED::get);
+    public boolean deleteAllByOrderId(Integer orderId) {
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderId(orderId).orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
         try {
-            for (OrderItem orderItem : orderItemList) {
-                orderItemRepository.delete(orderItem);
-            }
+            orderItemRepository.deleteAll(orderItemList);
             return true;
         } catch (OrderTaskException e) {
             return false;
@@ -139,7 +132,7 @@ public class OrderItemService {
         }
     }
 
-    public Integer deleteOneItem(OrderItemDTO orderItemDTO, int orderId) {
+    public Integer deleteOneItem(OrderItemDTO orderItemDTO, Integer orderId) {
         try {
             Product product = productRepository.findByProductName(orderItemDTO.getProductName());
 
@@ -150,7 +143,7 @@ public class OrderItemService {
             );
 
             if (deletedCount == 0) {
-                throw OrderException.NOT_DELETE_ITEM.get();
+                throw OrderException.ORDER_ITEM_NOT_REMOVED.get();
             }
 
             return product.getProductId();
@@ -161,21 +154,21 @@ public class OrderItemService {
         }
     }
 
-    public void deleteAllItems(int orderId) {
+    public void deleteAllItems(Integer orderId) {
         orderItemRepository.deleteByOrderOrderId(orderId);
     }
 
-    public void deleteoneTem(String email, int orderId, int orderItemId) {
+    public void deleteSingleOrderItem(String email, Integer orderId, Integer orderItemId) {
         orderItemRepository.deleteByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId);
     }
 
     // 해당 OrderItem을 새로운 내역으로 수정
     public OrderItemDTO updateOrderItem(OrderItemDTO orderItemDTO) {
         OrderItem orderItem = orderItemRepository.findById(orderItemDTO.getOrderItemId())
-                .orElseThrow(OrderException.NOT_FOUND_ORDER_ITEM::get);
+                .orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
 
         Product foundProduct = productRepository.findByProductName(orderItemDTO.getProductName());
-        if (foundProduct == null) throw OrderException.BAD_RESOURCE.get();
+        if (foundProduct == null) throw OrderException.INVALID_RESOURCE.get();
 
         // 수량이 0인 경우 예외 -> OrderItem 삭제 기능 사용하도록 유도
         if (orderItemDTO.getQuantity() == 0) {

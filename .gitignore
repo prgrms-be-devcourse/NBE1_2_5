@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -36,7 +36,11 @@ out/
 ### VS Code ###
 .vscode/
 
-### .idea
-.idea/
-/src/test/
-/.idea/
+# 로그 파일
+*.log
+
+# 임시 파일
+*.tmp
+
+# Vim 임시 파일
+*.swp

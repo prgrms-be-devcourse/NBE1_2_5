@@ -13,23 +13,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Log4j2
 public class OrderService {
+
     private final OrderRepository orderRepository;
 
     // email을 받고, 해당하는 주문의 orderId 반환
     public OrderDTO findByEmail(String email) {
-        Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+        Order foundOrder = orderRepository.findByEmail(email).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
         return new OrderDTO(foundOrder);
     }
+
     //Email 엔티티 받기
     public List<Order> findEntityByEmail(String email) {
-        return orderRepository.findByEmails(email).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+        return orderRepository.findByEmails(email).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
     }
 
     public OrderDTO addOrders(OrderDTO orderDTO) {
@@ -42,24 +43,23 @@ public class OrderService {
         }
     }
 
-    public Order findById(int orderId) {
-        return orderRepository.findById(orderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+    public Order findById(Integer orderId) {
+        return orderRepository.findById(orderId).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
     }
 
-    public boolean deleteOneOrderOfOne(int OrderId) {
+    public boolean deleteOneOrderOfOne(Integer orderId) {
         try {
-            Order order = orderRepository.findById(OrderId).orElseThrow(OrderException.NOT_FOUND_ORDER::get);
+            Order order = orderRepository.findById(orderId).orElseThrow(OrderException.ORDER_NOT_FOUND::get);
             orderRepository.delete(order);
             return true;
         } catch (OrderTaskException e) {
             return false;
         } catch (Exception e) {
-            return orderRepository.findById(OrderId).orElse(null) == null;
+            return orderRepository.findById(orderId).orElse(null) == null;
         }
-
     }
 
-    public boolean deleteOneItemInOrder(OrderItemDTO orderItemDTO,int productId, int orderId){
+    public boolean deleteOneItemInOrder(OrderItemDTO orderItemDTO,Integer productId, Integer orderId){
         Order byIdOrder = findById(orderId);
         OrderItem orderItem = orderItemDTO.toEntity(productId, orderId);
         if (byIdOrder.getOrderItems().contains(orderItem)) {
@@ -68,7 +68,6 @@ public class OrderService {
         }
         return false;
     }
-
 
     public boolean deleteAllOrderOfOne(String email) {
         List<Order> allByEmail = orderRepository.findAllByEmail(email);
@@ -81,7 +80,6 @@ public class OrderService {
         } catch (Exception e) {
             return allByEmail.isEmpty();
         }
-
     }
 
     public List<Order> findAllByEmail(String email){
@@ -93,9 +91,8 @@ public class OrderService {
         return orderRepository.findOrderIdByEmail(email);
     }
 
-
     // 이메일 주문자번호 주문번호로 찾기
-    public Order getOrders(String email, int orderId, int orderItemId) {
+    public Order getOrders(String email, Integer orderId, Integer orderItemId) {
         return orderRepository.findByEmailAndOrderIdAndOrderItemId(email, orderId, orderItemId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with given email, orderId, and orderItemId."));
     }
