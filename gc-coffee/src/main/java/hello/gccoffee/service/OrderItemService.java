@@ -122,7 +122,6 @@ public class OrderItemService {
             orderItemRepository.save(orderItem);
             order.addOrderItems(orderItem);
         }
-        order.changeOrderEnum(OrderEnum.ORDER_ACCEPTED);
         return orderItemList;
     }
 
@@ -173,7 +172,7 @@ public class OrderItemService {
     // 해당 OrderItem을 새로운 내역으로 수정
     public OrderItemDTO updateOrderItem(OrderItemDTO orderItemDTO) {
         OrderItem orderItem = orderItemRepository.findById(orderItemDTO.getOrderItemId())
-                .orElseThrow(OrderException.ORDER_ITEM_NOT_FOUND::get);
+                .orElseThrow(OrderException.NOT_FOUND_ORDER_ITEM::get);
 
         Product foundProduct = productRepository.findByProductName(orderItemDTO.getProductName());
         if (foundProduct == null) throw OrderException.BAD_RESOURCE.get();
