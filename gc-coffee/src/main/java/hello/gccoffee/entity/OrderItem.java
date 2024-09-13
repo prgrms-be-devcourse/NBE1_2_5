@@ -1,12 +1,13 @@
 package hello.gccoffee.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "t_order_item")
 @Getter
-@ToString(exclude = {"order", "products"})
+@ToString(exclude = {"order", "product"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,15 +19,38 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private Product product;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
 
-    private int price;
+    private Integer price;
 
-    private int quantity;
+    private Integer quantity;
+
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
+
+    public void changePrice(Integer price) {
+        this.price = price;
+    }
+
+    public void changeProduct(Product product) {
+        this.product = product;
+    }
+
+    public void changeOrder(Order order) {
+        this.order = order;
+    }
+
+    public void changeQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }

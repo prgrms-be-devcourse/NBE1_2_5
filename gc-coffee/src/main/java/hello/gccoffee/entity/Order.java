@@ -1,5 +1,6 @@
 package hello.gccoffee.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,13 +33,16 @@ public class Order {
     @CreatedDate
     private LocalDateTime orderTime;
 
-    private OrderEnum orderStatus;
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private OrderEnum orderEnum = OrderEnum.ORDER_ACCEPTED;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public void addOrderItems(OrderItem orderItem) {
+        if (orderItems.contains(orderItem)) return;
         orderItems.add(orderItem);
     }
 
@@ -46,7 +50,7 @@ public class Order {
         orderItems.clear();
     }
 
-    public void changeOrderStatus(OrderEnum orderStatus) {
-        this.orderStatus = orderStatus;
+    public void changeOrderEnum(OrderEnum orderEnum) {
+        this.orderEnum = orderEnum;
     }
 }
