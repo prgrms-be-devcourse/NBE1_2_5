@@ -4,7 +4,6 @@ import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderItem;
 import hello.gccoffee.entity.Product;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -50,7 +49,7 @@ public class OrderItemDTO {
     @NotNull(message = "가격을 입력해주세요")
     @Min(0)
     @Max(1_000_000)
-    @Schema(description = "상품 가격", example = "10000" )
+    @Schema(description = "상품 가격", example = "10000")
     private int price;
 
     @NotNull(message = "수량을 입력해주세요")
@@ -87,7 +86,7 @@ public class OrderItemDTO {
         Order order = Order.builder()
                 .orderId(orderId)
                 .email(this.email)
-                .address( this.address)
+                .address(this.address)
                 .postcode(this.postcode)
                 .build();
 

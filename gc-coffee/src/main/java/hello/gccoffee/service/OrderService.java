@@ -59,7 +59,7 @@ public class OrderService {
         }
     }
 
-    public boolean deleteOneItemInOrder(OrderItemDTO orderItemDTO,Integer productId, Integer orderId){
+    public boolean deleteOneItemInOrder(OrderItemDTO orderItemDTO, Integer productId, Integer orderId) {
         Order byIdOrder = findById(orderId);
         OrderItem orderItem = orderItemDTO.toEntity(productId, orderId);
         if (byIdOrder.getOrderItems().contains(orderItem)) {
@@ -82,7 +82,7 @@ public class OrderService {
         }
     }
 
-    public List<Order> findAllByEmail(String email){
+    public List<Order> findAllByEmail(String email) {
         return orderRepository.findAllByEmail(email);
     }
 

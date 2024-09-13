@@ -2,8 +2,6 @@ package hello.gccoffee.dto;
 
 import hello.gccoffee.entity.Category;
 import hello.gccoffee.entity.Product;
-import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-
 
 import java.time.LocalDateTime;
 

@@ -48,7 +48,7 @@ public interface AdminApiControllerDocs {
 
     @Operation(summary = "주문 목록 조회", description = "관리자 비밀번호를 입력받아 관리자임을 인증하고, 전체 주문 목록을 조회합니다.")
     @ApiResponse(responseCode = "200", description = "주문 목록 조회 완료")
-    @ProductExceptionCode({ProductException.NOT_AUTHENTICATED_USER, })
+    @ProductExceptionCode({ProductException.NOT_AUTHENTICATED_USER,})
     ResponseEntity<List<OrderItemDTO>> getOrderList(
             @Parameter(description = "관리자 비밀번호") @RequestParam("adminPassword") String adminPassword);
 

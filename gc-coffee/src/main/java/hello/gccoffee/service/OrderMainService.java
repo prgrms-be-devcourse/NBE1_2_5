@@ -2,17 +2,15 @@ package hello.gccoffee.service;
 
 import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.dto.OrderItemDTO;
-import hello.gccoffee.entity.OrderItem;
+import hello.gccoffee.entity.Order;
 import hello.gccoffee.exception.OrderException;
 import hello.gccoffee.exception.OrderTaskException;
-import hello.gccoffee.entity.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

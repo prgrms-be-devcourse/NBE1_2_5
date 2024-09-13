@@ -59,7 +59,7 @@ public class ProductService {
 
         try {
             productRepository.delete(product);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw ProductException.PRODUCT_NOT_REMOVED.get();
         }
     }

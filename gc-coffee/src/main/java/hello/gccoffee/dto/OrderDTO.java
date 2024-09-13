@@ -2,11 +2,9 @@ package hello.gccoffee.dto;
 
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderEnum;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

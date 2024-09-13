@@ -37,7 +37,7 @@ public class AdminApiControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleProductTaskException(MethodArgumentNotValidException e) {
         Map<String, String> map = new HashMap<>();
-        map.put("error",  e.getFieldError().getDefaultMessage());
+        map.put("error", e.getFieldError().getDefaultMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 

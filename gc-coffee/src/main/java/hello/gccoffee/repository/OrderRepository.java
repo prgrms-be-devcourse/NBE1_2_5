@@ -1,6 +1,5 @@
 package hello.gccoffee.repository;
 
-import hello.gccoffee.dto.OrderDTO;
 import hello.gccoffee.entity.Order;
 import hello.gccoffee.entity.OrderEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
